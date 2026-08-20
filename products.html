@@ -211,7 +211,7 @@
     btn.disabled=true; btn.textContent="Purchasing…";
     alertEl.className="alert";
 
-    var {data,error} = await window.sb.rpc("purchase_product",{p_user_id:userId,p_product_id:pendingPlanId});
+    var {data,error} = await window.sb.rpc("purchase_product",{p_product_id:pendingPlanId});
 
     if(error||!data?.ok){
       alertEl.textContent = data?.error||error?.message||"Purchase failed.";
