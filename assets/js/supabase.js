@@ -1,19 +1,61 @@
-/* Greenew Supabase bootstrap. Configure the public browser values for your deployment. */
+/* Greenew Supabase bootstrap. Public browser config may come from page data attributes or /api/config. */
 (function () {
   "use strict";
-  var SUPABASE_URL = document.body?.dataset?.supabaseUrl || "YOUR_SUPABASE_URL";
-  var SUPABASE_ANON = document.body?.dataset?.supabaseAnon || "YOUR_SUPABASE_ANON_KEY";
 
-  if (!SUPABASE_URL || SUPABASE_URL === "YOUR_SUPABASE_URL" || !SUPABASE_ANON || SUPABASE_ANON === "YOUR_SUPABASE_ANON_KEY") {
-    console.warn("GREENEW: Supabase is not configured. Add the public values to the page config or your deployment template.");
-    return;
+  function firstValue() {
+    for (var i = 0; i < arguments.length; i += 1) {
+      if (arguments[i] && String(arguments[i]).trim()) return String(arguments[i]).trim();
+    }
+    return "";
   }
-  if (typeof window.supabase === "undefined") {
-    console.error("GREENEW: Supabase client library is not loaded.");
-    return;
+
+  function inlineConfig() {
+    var body = document.body;
+    var url = body?.dataset?.supabaseUrl || "";
+    var anon = body?.dataset?.supabaseAnon || "";
+    if (!url || url === "YOUR_SUPABASE_URL" || !anon || anon === "YOUR_SUPABASE_ANON_KEY") return null;
+    return { supabaseUrl: url, supabaseAnon: anon };
   }
-  window.sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
-  });
-  window.GreenewUI?.hideLoader();
+
+  function setConfigError(message) {
+    window.GreenewConfig = { ok: false, error: message };
+    window.GreenewUI?.hideLoader();
+  }
+
+  window.GreenewReady = (async function () {
+    var config = inlineConfig();
+
+    if (!config) {
+      try {
+        var response = await fetch("/api/config", { headers: { Accept: "application/json" } });
+        var payload = await response.json().catch(function () { return null; });
+        if (response.ok && payload?.supabaseUrl && payload?.supabaseAnon) {
+          config = { supabaseUrl: payload.supabaseUrl, supabaseAnon: payload.supabaseAnon };
+        } else {
+          setConfigError(payload?.error || "Greenew public Supabase configuration is missing.");
+          return null;
+        }
+      } catch (error) {
+        setConfigError("Greenew could not reach its public configuration endpoint. Check the deployment and try again.");
+        return null;
+      }
+    }
+
+    if (typeof window.supabase === "undefined") {
+      setConfigError("The Greenew Supabase client library did not load. Check the CDN policy or network connection.");
+      return null;
+    }
+
+    try {
+      window.sb = window.supabase.createClient(config.supabaseUrl, config.supabaseAnon, {
+        auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+      });
+      window.GreenewConfig = { ok: true, supabaseUrl: config.supabaseUrl };
+      window.GreenewUI?.hideLoader();
+      return window.sb;
+    } catch (error) {
+      setConfigError("Greenew received an invalid Supabase public configuration.");
+      return null;
+    }
+  })();
 })();

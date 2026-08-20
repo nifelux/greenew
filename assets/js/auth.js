@@ -3,6 +3,7 @@
   "use strict";
   window.GreenewAuth = {
     requireAuth: async function () {
+      if (window.GreenewReady) await window.GreenewReady;
       if (!window.sb) { location.href = "/index.html"; return null; }
       try {
         var { data: { session } } = await window.sb.auth.getSession();
@@ -20,6 +21,7 @@
       } catch (e) { location.href = "/dashboard.html"; return null; }
     },
     loadProfile: async function (userId) {
+      if (window.GreenewReady) await window.GreenewReady;
       if (!window.sb) return null;
       try {
         var { data: profile } = await window.sb.from("profiles").select("*").eq("id", userId).single();
