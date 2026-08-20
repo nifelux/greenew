@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Greenew — Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;min-height:100vh}
+    .wrap{max-width:440px;margin:0 auto;min-height:100vh}
+
+    /* Hero — inline gradient so it works even if styles.css has issues */
+    .hero{
+      background:linear-gradient(135deg,#0F3D2E 0%,#149A68 100%);
+      padding:44px 32px 36px;text-align:center;color:#fff;
+      position:relative;overflow:hidden;
+    }
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:rgba(255,255,255,.07);border-radius:50%;}
+    .logo{font-size:30px;font-weight:800;letter-spacing:-.3px;position:relative;z-index:1}
+    .logo-sub{font-size:13px;opacity:.8;margin-top:4px;position:relative;z-index:1}
+
+    .body{padding:24px 22px 60px}
+    .title{font-size:22px;font-weight:800;color:#163027;margin-bottom:4px}
+    .sub{font-size:14px;color:#6E8178;margin-bottom:22px}
+
+    /* ref box — hidden by default via inline style */
+    .ref-box{
+      background:#ECFAF2;border-radius:10px;padding:10px 14px;
+      margin-bottom:16px;font-size:13px;color:#0F3D2E;font-weight:600;
+    }
+
+    /* alert — hidden by default via inline style */
+    .alert-box{
+      padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;
+      margin-bottom:14px;
+    }
+    .alert-error  {background:#FEE2E2;color:#991B1B}
+    .alert-success{background:#DDF6EA;color:#0D6548}
+
+    .field{margin-bottom:14px}
+    .field label{display:block;font-size:13px;font-weight:600;color:#355247;margin-bottom:5px}
+    .field input{
+      width:100%;padding:13px 16px;border:2px solid #DDE9E1;border-radius:10px;
+      font-size:15px;color:#163027;background:#fff;outline:none;font-family:inherit;
+    }
+    .field input:focus{border-color:#0F3D2E}
+
+    .btn{
+      width:100%;padding:15px;border:none;border-radius:50px;cursor:pointer;
+      font-size:15px;font-weight:700;font-family:inherit;
+      background:linear-gradient(135deg,#0F3D2E,#149A68);color:#fff;
+      transition:opacity .15s;margin-top:4px;
+    }
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+
+    .switch{text-align:center;font-size:14px;color:#6E8178;margin-top:18px}
+    .switch a{color:#0F3D2E;font-weight:700;text-decoration:none}
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="logo">⚡ Greenew</div>
+    <div class="logo-sub">Start your energy service journey</div>
+  </div>
+
+  <div class="body">
+    <div class="title">Create Account</div>
+    <div class="sub">Join thousands earning daily on Greenew</div>
+
+    <!-- Ref box — hidden by default -->
+    <div id="refBox" class="ref-box" style="display:none">
+      🎉 Referred by: <span id="refName">a friend</span>
+    </div>
+
+    <!-- Alert box — hidden by default -->
+    <div id="alertBox" class="alert-box" style="display:none"></div>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="fullName" placeholder="Your full name" autocomplete="name"/>
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+    </div>
+    <div class="field">
+      <label>Phone Number</label>
+      <input type="tel" id="phone" placeholder="080XXXXXXXX"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Min. 6 characters"/>
+    </div>
+    <div class="field">
+      <label>Referral Code <span style="color:#8BA296;font-weight:400">(optional)</span></label>
+      <input type="text" id="refCode" placeholder="ENTER CODE" style="text-transform:uppercase;letter-spacing:.08em"/>
+    </div>
+
+    <button class="btn" id="regBtn">Create Account</button>
+
+    <div class="switch">
+      Already have an account? <a href="index.html">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/supabase.js"></script>
+<script>
+(function(){
+
+  /* ── helpers ── */
+  function cleanMsg(msg){
+    if(!msg) return null;
+    var s = String(msg).trim();
+    // Supabase returns "{}" when DB tables don't exist or trigger fails
+    if(s === "{}" || s === "[]" || s === "[object Object]" || s === "undefined") return null;
+    // PostgREST error wrapping
+    try { var p = JSON.parse(s); if(p && p.message) return p.message; } catch(e){}
+    return s;
+  }
+
+  function showAlert(msg, type){
+    var el  = document.getElementById("alertBox");
+    var clean = cleanMsg(msg) || (type==="success"
+      ? "Success!"
+      : "Something went wrong. Make sure the database schema has been set up in Supabase.");
+    el.textContent = clean;
+    el.className = "alert-box " + (type==="success" ? "alert-success" : "alert-error");
+    el.style.display = "block";
+  }
+  function hideAlert(){
+    document.getElementById("alertBox").style.display = "none";
+  }
+
+  /* ── pre-fill ref code from URL ── */
+  var urlRef = new URLSearchParams(location.search).get("ref");
+  if(urlRef){
+    document.getElementById("refCode").value = urlRef.toUpperCase();
+    document.getElementById("refBox").style.display = "block";
+  }
+
+  document.getElementById("refCode").addEventListener("input", function(){
+    this.value = this.value.toUpperCase();
+  });
+
+  /* ── register ── */
+  document.getElementById("regBtn").addEventListener("click", async function(){
+    var btn   = this;
+    var name  = document.getElementById("fullName").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var pass  = document.getElementById("password").value;
+    var ref   = document.getElementById("refCode").value.trim().toUpperCase();
+
+    hideAlert();
+
+    /* validate */
+    if(!name || !email || !phone || !pass){
+      showAlert("Please fill in all required fields.", "error"); return;
+    }
+    if(pass.length < 6){
+      showAlert("Password must be at least 6 characters.", "error"); return;
+    }
+
+    /* check Supabase is ready */
+    if(!window.sb){
+      showAlert("Connection error. Please refresh the page and try again.", "error"); return;
+    }
+
+    btn.disabled = true; btn.textContent = "Creating account…";
+
+    try {
+
+      /* Pre-fetch referrer name for the welcome banner only — the
+         actual referred_by assignment now happens server-side via
+         the signup trigger (see fix_referral_signup.sql), since
+         RLS blocks a client-side write here whenever email
+         confirmation is required and no session exists yet. */
+      if(ref){
+        var {data:refProfile} = await window.sb
+          .from("profiles").select("id,full_name")
+          .eq("referral_code", ref).single();
+        if(refProfile){
+          document.getElementById("refName").textContent = refProfile.full_name || "a friend";
+          document.getElementById("refBox").style.display = "block";
+        }
+      }
+
+      /* sign up — full_name, phone, and referral_code are passed as
+         metadata and picked up server-side by the handle_new_user()
+         trigger, which runs with elevated privileges and isn't
+         affected by whether a session exists yet. */
+      var {data, error} = await window.sb.auth.signUp({
+        email,
+        password: pass,
+        options: {
+          data: {
+            full_name: name,
+            phone: phone,
+            referral_code: ref || null,
+          }
+        }
+      });
+
+      if(error){
+        showAlert(error.message || "Registration failed. Try again.", "error");
+        btn.disabled = false; btn.textContent = "Create Account"; return;
+      }
+
+      /* check if email confirmation is required */
+      if(!data?.session){
+        showAlert(
+          "✅ Account created! Check your email for a confirmation link, then sign in.",
+          "success"
+        );
+        btn.disabled = false; btn.textContent = "Create Account";
+        return;
+      }
+
+      /* no confirmation required — sign in directly */
+      showAlert("✅ Account created! Signing you in…", "success");
+
+      var {error:loginErr} = await window.sb.auth.signInWithPassword({email, password:pass});
+      if(loginErr){
+        showAlert("Account created! Please sign in manually.", "success");
+        setTimeout(function(){ location.href = "/index.html"; }, 1500);
+        return;
+      }
+
+      setTimeout(function(){ location.href = "/dashboard.html"; }, 1000);
+
+    } catch(e) {
+      console.error("Registration error:", e);
+      var errMsg = cleanMsg(e?.message);
+      showAlert(errMsg || "Registration failed. Please check your Supabase setup and try again.", "error");
+      btn.disabled = false; btn.textContent = "Create Account";
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
