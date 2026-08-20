@@ -80,7 +80,9 @@
 <script src="assets/js/greenew.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  if (window.GreenewReady) await window.GreenewReady;
+
   // Already logged in?
   window.sb?.auth.getSession().then(function (r) {
     if (r.data?.session) location.href = "/dashboard.html";
@@ -95,6 +97,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!email || !pass) {
       alert.textContent = "Please fill in all fields.";
       alert.className = "alert alert-error show"; return;
+    }
+
+    if (!window.sb) {
+      alert.textContent = window.GreenewConfig?.error || "Greenew access is not configured yet. Ask the site administrator to set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.";
+      alert.className = "alert alert-error show";
+      return;
     }
 
     btn.disabled = true; btn.textContent = "Signing in…";

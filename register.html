@@ -168,9 +168,10 @@
       showAlert("Password must be at least 6 characters.", "error"); return;
     }
 
-    /* check Supabase is ready */
+    /* wait for page config or /api/config before using Supabase */
+    if(window.GreenewReady) await window.GreenewReady;
     if(!window.sb){
-      showAlert("Connection error. Please refresh the page and try again.", "error"); return;
+      showAlert(window.GreenewConfig?.error || "Greenew access is not configured yet. Ask the site administrator to set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.", "error"); return;
     }
 
     btn.disabled = true; btn.textContent = "Creating account…";
