@@ -39,7 +39,7 @@
 
   <div class="checkin-card">
     <div class="checkin-icon" id="checkinIcon">🎁</div>
-    <div class="checkin-amount">₦50</div>
+    <div class="checkin-amount" id="checkinAmount">₦50</div>
     <div class="checkin-label">Daily bonus — claim every day!</div>
     <button class="checkin-btn" id="checkinBtn" onclick="doCheckin()">Claim ₦50 Bonus</button>
     <div class="streak-row" id="streakRow"></div>
@@ -60,6 +60,14 @@
 <script>
 (function(){
   var uid="";
+  var DAILY_BONUS=50;
+  function formatNaira(amount){return "₦"+Number(amount||0).toLocaleString("en-NG");}
+  function setBonusLabels(amount){
+    DAILY_BONUS=Number(amount)>0?Number(amount):50;
+    document.getElementById("checkinAmount").textContent=formatNaira(DAILY_BONUS);
+    var btn=document.getElementById("checkinBtn");
+    if(!btn.disabled) btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";
+  }
   function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
     var s=await window.GreenewAuth.requireAuth(); if(!s)return;
@@ -67,6 +75,7 @@
 
     var r=await fetch("/api/bonus?action=checkin-status&user_id="+uid);
     var d=await r.json();
+    setBonusLabels(d.bonus_amount);
     var btn=document.getElementById("checkinBtn");
     if(d.claimed){
       btn.textContent="✅ Already Claimed Today"; btn.disabled=true;
@@ -74,7 +83,7 @@
     }
 
     // Last 7 days streak
-    var {data:hist}=await window.sb.from("daily_checkins").select("date").eq("user_id",uid).order("date",{ascending:false}).limit(30);
+    var {data:hist}=await window.sb.from("daily_checkins").select("date,amount").eq("user_id",uid).order("date",{ascending:false}).limit(30);
     var claimedDates=new Set((hist||[]).map(function(x){return x.date;}));
     var streakEl=document.getElementById("streakRow");
     var days=["Su","Mo","Tu","We","Th","Fr","Sa"];
@@ -96,7 +105,7 @@
       histEl.innerHTML=hist.slice(0,7).map(function(c){
         return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">'+
           '<span style="font-size:13px;color:var(--text2)">'+new Date(c.date).toDateString()+'</span>'+
-          '<span style="font-size:13px;font-weight:700;color:var(--success)">+₦50</span>'+
+          '<span style="font-size:13px;font-weight:700;color:var(--success)">+'+formatNaira(c.amount || DAILY_BONUS)+'</span>'+
         '</div>';
       }).join("");
     }
@@ -108,12 +117,13 @@
     var r=await fetch("/api/bonus?action=daily-checkin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("🎉 Claimed ₦50 daily bonus!");
+      var creditedAmount=Number(d.amount)||DAILY_BONUS;
+      window.GreenewAuth.toast("🎉 Claimed "+formatNaira(creditedAmount)+" daily bonus!");
       btn.textContent="✅ Claimed!";
       document.getElementById("checkinIcon").textContent="✅";
     } else {
       window.GreenewAuth.toast(d.error==="already_claimed"?"Already claimed today!":d.error||"Error");
-      btn.disabled=false; btn.textContent="Claim ₦50 Bonus";
+      btn.disabled=false; btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";
     }
   };
 })();
