@@ -8,6 +8,13 @@
  */
 const { createClient } = require("@supabase/supabase-js");
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+const DAILY_CHECKIN_BONUS_FALLBACK = 50;
+
+async function getDailyCheckinBonus() {
+  const { data } = await supabase.from("site_settings").select("value").eq("key", "daily_checkin_bonus").maybeSingle();
+  const amount = Number(data?.value);
+  return Number.isFinite(amount) && amount >= 0 ? amount : DAILY_CHECKIN_BONUS_FALLBACK;
+}
 
 module.exports = async function(req, res) {
   res.setHeader("Access-Control-Allow-Origin","*");
@@ -22,8 +29,12 @@ module.exports = async function(req, res) {
   if(req.method==="GET") {
     if(action==="checkin-status") {
       const today = new Date().toISOString().slice(0,10);
-      const { data } = await supabase.from("daily_checkins").select("id,date").eq("user_id",user_id).eq("date",today).single();
-      return res.json({ ok:true, claimed: !!data, date:today });
+      const [claimResult, bonusAmount] = await Promise.all([
+        supabase.from("daily_checkins").select("id,date,amount").eq("user_id",user_id).eq("date",today).maybeSingle(),
+        getDailyCheckinBonus()
+      ]);
+      const claim = claimResult.data;
+      return res.json({ ok:true, claimed: !!claim, date:today, bonus_amount:bonusAmount, claimed_amount:claim ? Number(claim.amount) : null });
     }
     if(action==="salary-status") {
       const month = new Date().toISOString().slice(0,7);
