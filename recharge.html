@@ -83,12 +83,12 @@
     <div id="methodBadge" class="method-badge mb-manual">🏦 Manual Bank Transfer</div>
     <div id="methodContent">
       <div class="transfer-info">
-        <div class="ti-row"><span class="ti-label">Bank</span><span class="ti-val">Fidelity Bank</span></div>
+        <div class="ti-row"><span class="ti-label">Bank</span><span class="ti-val" id="bankName">Loading…</span></div>
         <div class="ti-row">
           <span class="ti-label">Account Number</span>
-          <span><span class="ti-val" id="acctNo">4567596085</span><button class="copy-btn" onclick="cp('acctNo')">COPY</button></span>
+          <span><span class="ti-val" id="acctNo">Loading…</span><button class="copy-btn" onclick="cp('acctNo')">COPY</button></span>
         </div>
-        <div class="ti-row"><span class="ti-label">Account Name</span><span class="ti-val">OLUWANIFEMI ABDULLAHI OLUDE</span></div>
+        <div class="ti-row"><span class="ti-label">Account Name</span><span class="ti-val" id="accountName">Loading…</span></div>
         <div class="ti-row">
           <span class="ti-label">Amount</span>
           <span><span class="ti-val" id="ti-amt">—</span><button class="copy-btn" id="tiAmtCopy" onclick="cp('ti-amt')" style="display:none">COPY</button></span>
@@ -165,12 +165,19 @@
     try{
       var r=await fetch("/api/deposit?action=method");
       var d=await r.json();
+      applyBankDetails(d);
       activeMethod=d.method||"manual";
       applyMethod(activeMethod);
     }catch(e){applyMethod("manual");}
 
     document.getElementById("rechBtn").addEventListener("click", handleMakePayment);
   });
+
+  function applyBankDetails(d){
+    document.getElementById("bankName").textContent=d.bank_name||"Bank details unavailable";
+    document.getElementById("acctNo").textContent=d.account_number||"Account number unavailable";
+    document.getElementById("accountName").textContent=d.account_name||"Account name unavailable";
+  }
 
   function applyMethod(m){
     var badge=document.getElementById("methodBadge");
@@ -227,6 +234,7 @@
       var r=await fetch("/api/deposit?action=initiate-manual",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,amount:selAmt})});
       var d=await r.json();
       if(!d.ok){ window.GreenewAuth.toast(d.error||"Error"); btn.disabled=false; btn.textContent="Continue"; return; }
+      applyBankDetails(d);
       currentRef=d.reference;
       document.getElementById("narCode").textContent=d.narration;
       document.getElementById("narrationBox").style.display="block";
