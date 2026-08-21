@@ -10,10 +10,21 @@
 const { createClient } = require("@supabase/supabase-js");
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
+function createUserClient(accessToken) {
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: { autoRefreshToken: false, persistSession: false },
+      global: { headers: { Authorization: `Bearer ${accessToken}` } }
+    }
+  );
+}
+
 module.exports = async function(req, res) {
   res.setHeader("Access-Control-Allow-Origin","*");
   res.setHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers","Content-Type");
+  res.setHeader("Access-Control-Allow-Headers","Content-Type, Authorization");
   if(req.method==="OPTIONS") return res.status(200).end();
 
   const action   = req.query.action;
@@ -21,12 +32,17 @@ module.exports = async function(req, res) {
   const bearer = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "").trim();
   if(!user_id) return res.status(400).json({ error:"user_id required" });
 
+  let userSupabase = null;
   if(action === "collect-income") {
     if(!bearer) return res.status(401).json({ error:"Authentication required" });
     const { data: authData, error: authError } = await supabase.auth.getUser(bearer);
     if(authError || !authData?.user || authData.user.id !== user_id) {
       return res.status(401).json({ error:"Authentication required" });
     }
+    if(!process.env.SUPABASE_URL || (!process.env.SUPABASE_ANON_KEY && !process.env.SUPABASE_KEY && !process.env.SUPABASE_SERVICE_ROLE_KEY)) {
+      return res.status(503).json({ error:"Supabase server configuration is incomplete" });
+    }
+    userSupabase = createUserClient(bearer);
   }
 
   if(req.method==="GET") {
@@ -71,7 +87,7 @@ module.exports = async function(req, res) {
   }
 
   if(action==="collect-income") {
-    const { data, error } = await supabase.rpc("collect_daily_income", { p_user_id:user_id });
+    const { data, error } = await userSupabase.rpc("collect_daily_income", { p_user_id:user_id });
     if(error) return res.status(500).json({ error:error.message });
     return res.json(data || { ok:false, error:"Nothing to collect today" });
   }
