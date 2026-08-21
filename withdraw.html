@@ -29,6 +29,7 @@
     <div class="bal-label">Available Balance</div>
     <div class="bal-amount" id="balance">₦0.00</div>
     <div class="min-note" id="limitsNote">Loading limits…</div>
+    <div class="min-note" id="policyNote" style="margin-top:4px">Loading withdrawal policy…</div>
   </div>
 
   <div class="section">
@@ -79,7 +80,7 @@
 <script>
 (function(){
   var uid="", balance=0, selectedCard=null, showManual=false;
-  var minW=1000, maxW=0; // maxW=0 means no maximum enforced
+  var minW=1000, maxW=0, feePercent=0, requireInvest=false, requireReferral=false; // maxW=0 means no maximum enforced
   function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
 
   waitSb(async function(){
@@ -108,6 +109,17 @@
           ? "Min: ₦"+minW.toLocaleString()+" · Max: ₦"+maxW.toLocaleString()
           : "Minimum refund: ₦"+minW.toLocaleString();
     }catch(e){ console.warn("limits check failed",e); }
+
+    try{
+      var policyRes=await fetch("/api/withdraw?action=policy");
+      var policy=await policyRes.json();
+      feePercent=Number(policy.fee_percent||0); requireInvest=!!policy.require_invest; requireReferral=!!policy.require_referral;
+      var policyParts=[];
+      if(feePercent>0) policyParts.push("Fee: "+feePercent+"%");
+      if(requireInvest) policyParts.push("Active plan required");
+      if(requireReferral) policyParts.push("Active referral required");
+      document.getElementById("policyNote").textContent=policyParts.length?policyParts.join(" · "):"No withdrawal fee";
+    }catch(e){ document.getElementById("policyNote").textContent="Withdrawal policy unavailable"; }
 
     var {data:w}=await window.sb.from("wallets").select("balance").eq("user_id",uid).single();
     balance=w?.balance||0;
@@ -160,7 +172,9 @@
 
     if(!amt||amt<minW){ al.textContent="Minimum refund is ₦"+minW.toLocaleString(); al.className="alert alert-error show"; return; }
     if(maxW>0 && amt>maxW){ al.textContent="Maximum refund is ₦"+maxW.toLocaleString(); al.className="alert alert-error show"; return; }
-    if(amt>balance){ al.textContent="Insufficient balance"; al.className="alert alert-error show"; return; }
+    var fee=Math.round(amt*feePercent)/100;
+    var totalDebit=amt+fee;
+    if(totalDebit>balance){ al.textContent="Insufficient balance for the refund and fee"; al.className="alert alert-error show"; return; }
 
     var bank=selectedCard?.bank_name||document.getElementById("bankName")?.value?.trim();
     var num =selectedCard?.account_number||document.getElementById("acctNum")?.value?.trim();
@@ -175,7 +189,7 @@
       al.textContent="✅ Refund request submitted! We'll process it within 24 hours.";
       al.className="alert alert-success show";
       btn.textContent="Submitted ✓";
-      balance-=amt;
+      balance-=totalDebit;
       document.getElementById("balance").textContent=window.GreenewAuth.money(balance);
     } else {
       al.textContent=d.error||"Error processing request";
