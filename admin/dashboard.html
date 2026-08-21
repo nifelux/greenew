@@ -493,8 +493,8 @@
     if(d.ok){
       document.getElementById("ov-users").textContent=d.total_users||0;
       document.getElementById("ov-active").textContent=d.active_products||0;
-      document.getElementById("ov-deps").textContent=d.pending_payments||0;
-      document.getElementById("ov-withs").textContent=d.pending_refunds||0;
+      document.getElementById("ov-deps").textContent=d.pending_deposits||0;
+      document.getElementById("ov-withs").textContent=d.pending_withdrawals||0;
     }
   }
 
@@ -508,7 +508,7 @@
       el.innerHTML='<div style="text-align:center;color:#f87171;padding:24px 16px;font-size:13px">⚠️ Failed to load: '+(d.error||"Unknown error")+'</div>';
       return;
     }
-    var deps=d.payments||[];
+    var deps=d.deposits||[];
     if(!deps.length){ el.innerHTML='<div style="text-align:center;color:#6E8178;padding:32px;font-size:14px">No payments found.</div>'; return; }
     el.innerHTML=deps.map(function(dep){
       var name=dep.profiles?.full_name||dep.profiles?.email||"User";
@@ -534,7 +534,7 @@
     var row=btn.closest(".dep-actions"),btns=row.querySelectorAll("button");
     btns.forEach(function(b){b.disabled=true;});
     btn.textContent=act==="approve"?"Approving…":"Rejecting…";
-    var r=await fetch("/api/admin?action=process-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({payment_id:id,act,admin_id:adminId})});
+    var r=await fetch("/api/admin?action=process-deposit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({deposit_id:id,act,admin_id:adminId})});
     var d=await r.json();
     window.GreenewAuth.toast(d.ok?(act==="approve"?"✅ Approved!":"🚫 Rejected"):("❌ "+d.error));
     setTimeout(loadPayments,600);
@@ -578,7 +578,7 @@
     var input=document.getElementById("ref-"+alertId);
     var ref=input.value.trim();
     if(!ref){ window.GreenewAuth.toast("Enter the payment reference first"); return; }
-    var r=await fetch("/api/admin?action=manual-match-alert",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({alert_id:alertId,payment_reference:ref,admin_id:adminId})});
+    var r=await fetch("/api/admin?action=manual-match-alert",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({alert_id:alertId,deposit_reference:ref,admin_id:adminId})});
     var d=await r.json();
     window.GreenewAuth.toast(d.ok?"✅ Matched and credited!":"❌ "+d.error);
     loadUnmatchedAlerts();
@@ -595,7 +595,7 @@
       el.innerHTML='<div style="text-align:center;color:#f87171;padding:24px 16px;font-size:13px">⚠️ Failed to load: '+(d.error||"Unknown error")+'</div>';
       return;
     }
-    var ws=d.refunds||[];
+    var ws=d.withdrawals||[];
     if(!ws.length){ el.innerHTML='<div style="text-align:center;color:#6E8178;padding:32px;font-size:14px">No refunds found.</div>'; return; }
     el.innerHTML=ws.map(function(w){
       var name=w.profiles?.full_name||w.profiles?.email||"User";
@@ -619,7 +619,7 @@
   window.actW=async function(id,act,btn){
     var row=btn.closest(".dep-actions"),btns=row.querySelectorAll("button");
     btns.forEach(function(b){b.disabled=true;});
-    var r=await fetch("/api/admin?action=process-refund",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({refund_id:id,act,admin_id:adminId})});
+    var r=await fetch("/api/admin?action=process-withdrawal",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({withdrawal_id:id,act,admin_id:adminId})});
     var d=await r.json();
     window.GreenewAuth.toast(d.ok?(act==="approve"?"✅ Approved!":"🚫 Rejected"):("❌ "+d.error));
     setTimeout(loadRefundRequests,600);
@@ -946,7 +946,7 @@
   /* ── Offer codes ── */
   window.randomizeCode=function(){
     var chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    var code="VTL-";
+    var code="GRN-";
     for(var i=0;i<6;i++) code+=chars[Math.floor(Math.random()*chars.length)];
     document.getElementById("giftCode").value=code;
   };
