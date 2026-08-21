@@ -1,0 +1,87 @@
+/* Greenew route-level premium override layer. Loaded after legacy route styles. */
+
+body {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(183,214,51,.12), transparent 30rem),
+    radial-gradient(circle at 100% 0%, rgba(21,153,87,.08), transparent 34rem),
+    var(--warm) !important;
+  color: var(--text) !important;
+}
+
+.page-wrap, .wrap, .auth-wrap { width: min(100%, 920px) !important; max-width: 920px !important; background: transparent !important; }
+.page-wrap { min-height: 100vh; margin: 0 auto; padding-bottom: 104px !important; }
+
+.topbar, .page-topbar {
+  min-height: 70px !important;
+  color: var(--text) !important;
+  background: rgba(251,252,246,.9) !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: 0 6px 22px rgba(7,59,42,.035) !important;
+  backdrop-filter: blur(18px) !important;
+}
+.topbar-title { color: var(--text) !important; }
+.back-btn, .icon-btn { color: var(--forest) !important; background: var(--white) !important; border: 1px solid var(--border) !important; }
+
+.wallet-card, .profile-hero, .ref-hero, .collect-hero, .salary-hero {
+  color: var(--white) !important;
+  background: linear-gradient(145deg, var(--forest-2), var(--forest-3) 62%, var(--emerald)) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  box-shadow: var(--shadow-dark) !important;
+}
+.wallet-card { border-radius: 25px !important; }
+.wallet-btn.payment, .wallet-btn.refund { color: var(--white) !important; background: rgba(255,255,255,.13) !important; border: 1px solid rgba(255,255,255,.25) !important; }
+.wallet-btn.refund { background: rgba(4,43,32,.22) !important; }
+
+.card, .form-card, .menu-group, .product-card, .payments-card, .contact-card, .hours-card, .checkin-card, .gift-hero, .method-card, .bal-card, .saved-card {
+  background: rgba(255,255,255,.93) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+}
+.product-header { color: var(--white) !important; background: linear-gradient(135deg, var(--forest-2), var(--forest-3)) !important; }
+.product-price { color: #f9e18e !important; }
+
+.auth-body {
+  min-height: 100vh !important;
+  padding: 28px 18px !important;
+  background: radial-gradient(circle at 100% 0%, rgba(183,214,51,.2), transparent 22rem), linear-gradient(145deg, var(--forest-2), var(--forest-3)) !important;
+}
+.auth-hero, .hero {
+  color: var(--white) !important;
+  background: linear-gradient(145deg, var(--forest-2), var(--forest-3) 62%, var(--emerald)) !important;
+}
+.auth-body > .auth-wrap, .auth-wrap { background: transparent !important; }
+.auth-body .form-card, .auth-body .auth-card, .body { background: rgba(255,255,255,.97) !important; }
+.auth-title, .title { color: var(--forest) !important; }
+.auth-sub, .sub { color: var(--muted) !important; }
+.auth-hero .logo, .auth-hero .logo-sub, .hero .logo, .hero .logo-sub { color: var(--white) !important; }
+.auth-switch, .switch { color: var(--muted) !important; }
+.auth-switch a, .switch a, .forgot { color: var(--emerald-dark) !important; }
+.field input, .field-input, input, select, textarea { color: var(--text) !important; background: var(--ivory) !important; border-color: var(--border) !important; border-radius: var(--radius-sm) !important; }
+.field input:focus, .field-input:focus, input:focus, select:focus, textarea:focus { border-color: var(--emerald) !important; background: var(--white) !important; box-shadow: var(--focus) !important; }
+.btn, .body .btn { border-radius: 13px !important; background: linear-gradient(135deg, var(--forest), var(--emerald)) !important; color: var(--white) !important; box-shadow: 0 10px 20px rgba(7,59,42,.18) !important; }
+.btn-outline { color: var(--forest) !important; background: transparent !important; box-shadow: none !important; }
+
+.quick-item, .stat-box, .mini-product, .list-item, .menu-item, .member-item, .notif-item, .msg-item, .bc-item, .contact-item, .info-row, .dc-item, .ti-row { border-color: var(--border) !important; background: rgba(255,255,255,.9) !important; }
+.quick-item:hover, .menu-item:hover { background: var(--mint-2) !important; }
+.menu-icon, .quick-item-icon, .empty-icon, .hero-icon, .gift-icon, .checkin-icon, .info-icon, .saved-card-icon, .lock-icon, .ci-icon, .notif-icon, .vt-icon { color: var(--emerald-dark) !important; background: var(--mint) !important; }
+
+.tabs, .level-tabs, .hist-tabs { background: rgba(255,255,255,.8) !important; border-color: var(--border) !important; }
+.tab, .ltab, .htab { color: var(--muted) !important; background: transparent !important; }
+.tab.on, .ltab.on, .htab.on, .tab.active, .ltab.active, .htab.active { color: var(--forest) !important; background: var(--white) !important; box-shadow: 0 5px 12px rgba(7,59,42,.08) !important; }
+
+.bottom-nav { background: rgba(251,252,246,.95) !important; border-color: var(--border) !important; }
+.nav-item { color: var(--muted) !important; }
+.nav-item.active { color: var(--forest) !important; }
+.nav-icon { color: currentColor !important; background: transparent !important; }
+
+/* Remove visual sticker glyphs if any legacy route text remains. */
+.quick-item-icon, .nav-icon, .menu-icon, .empty-icon, .hero-icon, .gift-icon, .checkin-icon, .info-icon, .saved-card-icon, .lock-icon, .ci-icon, .notif-icon, .vt-icon, .avatar { font-size: 0 !important; }
+
+@media (min-width: 780px) { .bottom-nav { display: none !important; } }
+
+/* Auth forms are light content surfaces below the dark brand hero. */
+.auth-body { color: var(--text) !important; background: var(--ivory) !important; }
+.auth-body .field-label, .auth-body label { color: var(--text-2) !important; }
+.auth-body .auth-title, .auth-body .title { color: var(--forest) !important; }
+.auth-body .auth-sub, .auth-body .sub { color: var(--muted) !important; }
