@@ -29,8 +29,16 @@ module.exports = async function(req, res) {
 
   // GET: method
   if(req.method==="GET" && action==="method") {
-    const { data } = await supabase.from("site_settings").select("value").eq("key","deposit_method").single();
-    return res.json({ ok:true, method: data?.value || "manual" });
+    const { data:rows,error } = await supabase.from("site_settings").select("key,value").in("key",["deposit_method","bank_name","account_name","account_number"]);
+    if(error) return res.status(500).json({ error:error.message });
+    const settings=Object.fromEntries((rows||[]).map(s=>[s.key,s.value]));
+    return res.json({
+      ok:true,
+      method:settings.deposit_method || "manual",
+      bank_name:settings.bank_name || "",
+      account_name:settings.account_name || "",
+      account_number:settings.account_number || ""
+    });
   }
 
   // GET: status
