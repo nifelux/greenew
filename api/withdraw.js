@@ -28,6 +28,12 @@ module.exports = async function(req, res) {
     return res.json({ ok:true, min, max });
   }
 
+  if(req.method==="GET" && req.query.action==="policy") {
+    const { data } = await supabase.from("site_settings").select("key,value").in("key",["require_invest_before_withdraw","require_active_referral_to_withdraw","withdrawal_fee_percent"]);
+    const policy=Object.fromEntries((data||[]).map(s=>[s.key,s.value]));
+    return res.json({ ok:true, fee_percent:Number(policy.withdrawal_fee_percent||0), require_invest:policy.require_invest_before_withdraw==="true", require_referral:policy.require_active_referral_to_withdraw==="true" });
+  }
+
   const user_id = req.method==="GET" ? req.query.user_id : req.body?.user_id;
   if(!user_id) return res.status(400).json({ error:"user_id required" });
 
@@ -42,6 +48,8 @@ module.exports = async function(req, res) {
   // Enforce the admin's global lock — checked here too (not just on the
   // frontend) so the lock can't be bypassed by calling the API directly.
   const { data:lockSetting } = await supabase.from("site_settings").select("value").eq("key","withdrawals_locked").single();
+  const { data:gateSettings } = await supabase.from("site_settings").select("key,value").in("key",["require_invest_before_withdraw","require_active_referral_to_withdraw","withdrawal_fee_percent"]);
+  const gate = Object.fromEntries((gateSettings||[]).map(s=>[s.key,s.value]));
   if(lockSetting?.value === "true") {
     return res.json({ ok:false, error:"Withdrawals are temporarily paused. Please check back later." });
   }
@@ -64,11 +72,29 @@ module.exports = async function(req, res) {
 
   // Get profile for Telegram notification
   const { data:profile } = await supabase
-    .from("profiles").select("full_name,email").eq("id",user_id).single();
+    .from("profiles").select("full_name,email,is_active").eq("id",user_id).single();
+  if(profile?.is_active === false) return res.json({ ok:false, error:"This account is suspended." });
+  if(gate.require_invest_before_withdraw === "true") {
+    const { count } = await supabase.from("user_products").select("id",{count:"exact",head:true}).eq("user_id",user_id).eq("status","active");
+    if(!count) return res.json({ ok:false, error:"An active energy plan is required before withdrawal." });
+  }
+  if(gate.require_active_referral_to_withdraw === "true") {
+    const { data:refs } = await supabase.from("profiles").select("id").eq("referred_by",user_id);
+    const ids=(refs||[]).map(x=>x.id);
+    if(!ids.length) return res.json({ ok:false, error:"An active referral is required before withdrawal." });
+    const { count } = await supabase.from("user_products").select("id",{count:"exact",head:true}).in("user_id",ids).eq("status","active");
+    if(!count) return res.json({ ok:false, error:"An active referral is required before withdrawal." });
+  }
 
-  // Deduct balance
-  await supabase.from("wallets").update({ balance:w.balance-num, total_withdrawn:(w.total_withdrawn||0)+num, updated_at:new Date().toISOString() }).eq("user_id",user_id);
+  const feePercent=Math.max(0,Number(gate.withdrawal_fee_percent||0));
+  const fee=Math.round(num*feePercent)/100;
+  const totalDebit=num+fee;
+  if(Number(w.balance) < totalDebit) return res.json({ ok:false, error:"Insufficient balance for the withdrawal and fee" });
+
+  // Deduct requested amount plus the configured fee.
+  await supabase.from("wallets").update({ balance:Number(w.balance)-totalDebit, total_withdrawn:(w.total_withdrawn||0)+num, updated_at:new Date().toISOString() }).eq("user_id",user_id);
   await supabase.from("wallet_transactions").insert({ user_id, type:"withdrawal", amount:-num, description:"Withdrawal request" });
+  if(fee>0) await supabase.from("wallet_transactions").insert({ user_id, type:"withdrawal_fee", amount:-fee, description:"Withdrawal fee" });
 
   const { data:wit, error } = await supabase.from("withdrawals")
     .insert({ user_id, amount:num, bank_name, account_number, account_name, status:"pending" })

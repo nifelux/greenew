@@ -123,6 +123,33 @@ module.exports = async function(req, res) {
       return res.json({ ok:true, pending_deposits:d.count||0, pending_withdrawals:w.count||0, total_users:u.count||0, active_products:p.count||0 });
     }
 
+
+    if(action==="extra-settings") {
+      const keys=["bank_name","account_name","account_number","welcome_bonus","require_invest_before_withdraw","require_active_referral_to_withdraw","withdrawal_fee_percent","vip_enabled","referral_depth","referral_percent_l1","referral_percent_l2","referral_percent_l3","support_email","service_phone","telegram_link"];
+      const { data,error } = await supabase.from("site_settings").select("key,value").in("key",keys);
+      if(error) return res.status(500).json({ error:error.message });
+      const settings=Object.fromEntries((data||[]).map(s=>[s.key,s.value]));
+      return res.json({ ok:true, settings });
+    }
+
+    if(action==="user-team") {
+      const target=req.query.user_id;
+      if(!target) return res.status(400).json({ error:"user_id required" });
+      const { data:user } = await supabase.from("profiles").select("id,full_name,email,referral_code").eq("id",target).single();
+      if(!user) return res.status(404).json({ error:"User not found" });
+      const { data:members,error } = await supabase.from("profiles").select("id,full_name,email,is_active,vip_level,created_at").eq("referred_by",target).order("created_at",{ascending:false}).limit(200);
+      if(error) return res.status(500).json({ error:error.message });
+      const ids=(members||[]).map(m=>m.id);
+      let activeCount=0, teamDeposits=0;
+      if(ids.length){
+        const { count } = await supabase.from("user_products").select("id",{count:"exact",head:true}).in("user_id",ids).eq("status","active");
+        activeCount=count||0;
+        const { data:deps } = await supabase.from("deposits").select("amount").in("user_id",ids).eq("status","completed");
+        teamDeposits=(deps||[]).reduce((sum,d)=>sum+Number(d.amount||0),0);
+      }
+      return res.json({ ok:true, owner:user, members:members||[], active_investors:activeCount, team_deposits:teamDeposits });
+    }
+
     if(action==="withdrawal-lock-status") {
       const { data } = await supabase.from("site_settings").select("value").eq("key","withdrawals_locked").single();
       return res.json({ ok:true, locked: data?.value === "true" });
@@ -141,6 +168,17 @@ module.exports = async function(req, res) {
   if(req.method!=="POST") return res.status(405).json({ error:"Method not allowed" });
 
   // ── POSTs ─────────────────────────────────────────────────────────────────
+
+  if(action==="set-extra-settings") {
+    const allowed=["bank_name","account_name","account_number","welcome_bonus","require_invest_before_withdraw","require_active_referral_to_withdraw","withdrawal_fee_percent","vip_enabled","referral_depth","referral_percent_l1","referral_percent_l2","referral_percent_l3","support_email","service_phone","telegram_link"];
+    const payload=req.body?.settings||{};
+    const rows=allowed.filter(key=>payload[key]!==undefined).map(key=>({ key, value:String(payload[key]), updated_at:new Date().toISOString() }));
+    if(!rows.length) return res.status(400).json({ error:"No settings supplied" });
+    const { error } = await supabase.from("site_settings").upsert(rows);
+    if(error) return res.status(500).json({ error:error.message });
+    return res.json({ ok:true });
+  }
+
   if(action==="set-method") {
     const { method } = req.body;
     if(!["manual","paystack","ipayng"].includes(method)) return res.status(400).json({ error:"Invalid method" });
@@ -297,6 +335,19 @@ module.exports = async function(req, res) {
     const { error } = await supabase.from("profiles").update({ is_admin:!!is_admin }).eq("id",target_user_id);
     if(error) return res.status(500).json({ error:error.message });
     return res.json({ ok:true });
+  }
+
+
+  if(action==="set-user-active") {
+    const { target_user_id, is_active } = req.body;
+    if(!target_user_id) return res.status(400).json({ error:"target_user_id required" });
+    if(target_user_id===admin_id && is_active===false) return res.status(400).json({ error:"You cannot suspend your own account" });
+    const { data:target } = await supabase.from("profiles").select("id,is_admin").eq("id",target_user_id).single();
+    if(!target) return res.status(404).json({ error:"User not found" });
+    if(target.is_admin && is_active===false) return res.status(400).json({ error:"Remove admin access before suspending an administrator" });
+    const { error } = await supabase.from("profiles").update({ is_active:!!is_active }).eq("id",target_user_id);
+    if(error) return res.status(500).json({ error:error.message });
+    return res.json({ ok:true, is_active:!!is_active });
   }
 
   if(action==="create-gift-code") {

@@ -18,7 +18,16 @@ module.exports = async function(req, res) {
 
   const action   = req.query.action;
   const user_id  = req.method==="GET" ? req.query.user_id : req.body?.user_id;
+  const bearer = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "").trim();
   if(!user_id) return res.status(400).json({ error:"user_id required" });
+
+  if(action === "collect-income") {
+    if(!bearer) return res.status(401).json({ error:"Authentication required" });
+    const { data: authData, error: authError } = await supabase.auth.getUser(bearer);
+    if(authError || !authData?.user || authData.user.id !== user_id) {
+      return res.status(401).json({ error:"Authentication required" });
+    }
+  }
 
   if(req.method==="GET") {
     if(action==="bank-cards") {
@@ -62,38 +71,9 @@ module.exports = async function(req, res) {
   }
 
   if(action==="collect-income") {
-    const today = new Date().toISOString().slice(0,10);
-    // Get active products not yet claimed today
-    const { data:prods } = await supabase.from("user_products")
-      .select("*").eq("user_id",user_id).eq("status","active")
-      .or(`last_claim_date.is.null,last_claim_date.lt.${today}`);
-
-    if(!prods||!prods.length) return res.json({ ok:false, error:"Nothing to collect today" });
-
-    let total = 0;
-    for(const p of prods) {
-      const newDays = (p.days_collected||0) + 1;
-      const earned  = (p.total_earned||0) + p.daily_income;
-      const done    = newDays >= p.duration_days;
-      await supabase.from("user_products").update({
-        days_collected: newDays,
-        total_earned:   earned,
-        last_claim_date: today,
-        status: done ? "completed" : "active",
-      }).eq("id",p.id);
-      total += p.daily_income;
-    }
-
-    // Credit wallet
-    const { data:w } = await supabase.from("wallets").select("balance,total_profit").eq("user_id",user_id).single();
-    await supabase.from("wallets").update({
-      balance:       (w?.balance||0) + total,
-      total_profit:  (w?.total_profit||0) + total,
-      updated_at:    new Date().toISOString(),
-    }).eq("user_id",user_id);
-    await supabase.from("wallet_transactions").insert({ user_id, type:"daily_income", amount:total, description:"Daily income from "+prods.length+" product(s)" });
-
-    return res.json({ ok:true, amount:total, products:prods.length });
+    const { data, error } = await supabase.rpc("collect_daily_income", { p_user_id:user_id });
+    if(error) return res.status(500).json({ error:error.message });
+    return res.json(data || { ok:false, error:"Nothing to collect today" });
   }
 
   return res.status(400).json({ error:"Unknown action" });
