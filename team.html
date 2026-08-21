@@ -94,6 +94,7 @@
     }
     .dc-salary-note strong { color: var(--purple); }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 
@@ -107,7 +108,7 @@
     </div>
     <div class="ref-link-box" id="refLink">Loading…</div>
     <div style="margin-top:10px;display:flex;gap:8px">
-      <button class="copy-btn" onclick="shareLink()">📤 Share Link</button>
+      <button class="copy-btn" onclick="shareLink()"> Share Link</button>
     </div>
   </div>
 
@@ -116,22 +117,22 @@
     <div class="vip-prog-title">Service tier Level Progress <span id="activeRefs" style="color:var(--muted);font-weight:400;font-size:12px"></span></div>
     <div class="vip-tiers">
       <div class="vip-tier" id="vt1">
-        <div class="vt-icon">🥉</div>
+        <div class="vt-icon"></div>
         <div class="vt-label">Service tier 1</div>
         <div class="vt-req">3 refs</div>
       </div>
       <div class="vip-tier" id="vt2">
-        <div class="vt-icon">🥈</div>
+        <div class="vt-icon"></div>
         <div class="vt-label">Service tier 2</div>
         <div class="vt-req">5 refs</div>
       </div>
       <div class="vip-tier" id="vt3">
-        <div class="vt-icon">🥇</div>
+        <div class="vt-icon"></div>
         <div class="vt-label">Service tier 3</div>
         <div class="vt-req">10 refs</div>
       </div>
       <div class="vip-tier" id="vt4">
-        <div class="vt-icon">💎</div>
+        <div class="vt-icon"></div>
         <div class="vt-label">Service tier 4</div>
         <div class="vt-req">25 refs</div>
       </div>
@@ -178,7 +179,7 @@
       </div>
     </div>
     <div class="dc-salary-note">
-      💰 Your monthly service credit is <strong>5%</strong> of this total — currently <strong id="salaryEstimate">₦0</strong>. <a href="monthly-salary.html" style="color:var(--purple);font-weight:700">Available from the 5th →</a>
+       Your monthly service credit is <strong>5%</strong> of this total — currently <strong id="salaryEstimate">₦0</strong>. <a href="monthly-salary.html" style="color:var(--purple);font-weight:700">Available from the 5th →</a>
     </div>
   </div>
 
@@ -196,10 +197,10 @@
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon">🏠</span>Home</button>
-  <button class="nav-item" onclick="location.href='products.html'"><span class="nav-icon">📦</span>Plans</button>
-  <button class="nav-item active" onclick="location.href='team.html'"><span class="nav-icon">👥</span>Household</button>
-  <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon">👤</span>Profile</button>
+  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon"></span>Home</button>
+  <button class="nav-item" onclick="location.href='products.html'"><span class="nav-icon"></span>Plans</button>
+  <button class="nav-item active" onclick="location.href='team.html'"><span class="nav-icon"></span>Household</button>
+  <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon"></span>Profile</button>
 </nav>
 <div id="toast"></div>
 
@@ -263,7 +264,7 @@
         el.classList.remove("unlocked");
         if(activeCount >= thresholds[n]){
           el.classList.add("unlocked");
-          el.querySelector(".vt-req").textContent = "✅ Unlocked";
+          el.querySelector(".vt-req").textContent = "Unlocked";
         } else {
           el.querySelector(".vt-req").textContent = activeCount+"/"+thresholds[n]+" refs";
         }
@@ -293,7 +294,7 @@
     var members=level===1?l1Customers:level===2?l2Customers:l3Customers;
     var el=document.getElementById("membersList");
     if(!members.length){
-      el.innerHTML='<div class="empty"><div class="empty-icon">👥</div><p>No household level '+level+' customers yet.</p></div>';
+      el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No household level '+level+' customers yet.</p></div>';
       return;
     }
     el.innerHTML='<div class="card" style="margin:0 16px">'+(members.map(function(m){

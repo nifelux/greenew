@@ -13,12 +13,13 @@
     .bc-actions { display:flex; gap:8px; margin-top:12px; }
     .form-section { background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; margin:0 16px; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">💳 Payment methods</span>
+    <span class="topbar-title"> Payment methods</span>
     <div></div>
   </div>
 
@@ -58,7 +59,7 @@
     var d=await r.json();
     var cards=d.cards||[];
     var el=document.getElementById("cardList");
-    if(!cards.length){ el.innerHTML='<div class="empty"><div class="empty-icon">💳</div><p>No saved accounts yet.</p></div>'; return; }
+    if(!cards.length){ el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No saved accounts yet.</p></div>'; return; }
     el.innerHTML=cards.map(function(c){
       return '<div class="bc-item">'+
         '<div style="display:flex;align-items:flex-start;justify-content:space-between">'+
@@ -87,7 +88,7 @@
     var r=await fetch("/api/user?action=add-bank-card",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid,bank_name:bank,account_number:num,account_name:name,is_default:def})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("✅ Account saved!");
+      window.GreenewAuth.toast("Account saved!");
       document.getElementById("bankName").value=""; document.getElementById("acctNum").value=""; document.getElementById("acctName").value=""; document.getElementById("isDefault").checked=false;
       await loadCards();
     } else { al.textContent=d.error||"Error"; al.className="alert alert-error show"; }

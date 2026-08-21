@@ -30,12 +30,13 @@
     .prog-label { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px; }
     .status-done { background:#DDF6EA; color:#0D6548; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">📦 My active plans</span>
+    <span class="topbar-title"> My active plans</span>
     <div></div>
   </div>
 
@@ -112,7 +113,7 @@
 
     var el=document.getElementById("prodList");
     if(!active.length){
-      el.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>No active products.<br><a href="products.html" style="color:var(--purple);font-weight:700">Browse energy plans →</a></p></div>';
+      el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No active products.<br><a href="products.html" style="color:var(--purple);font-weight:700">Browse energy plans →</a></p></div>';
     } else {
       el.innerHTML=active.map(function(p){
         var pct=p.duration_days?Math.min(100,Math.round((p.days_collected/p.duration_days)*100)):0;
@@ -126,7 +127,7 @@
               '<div style="font-size:11px;color:var(--muted);margin-top:2px">Purchased '+formatDate(p.purchased_on||p.created_at)+(claimDate>today?' · '+formatDate(claimDate)+' claimable':'')+'</div>'+
             '</div>'+
             '<span style="font-size:11px;font-weight:700;color:'+(canCollect?"var(--success)":"var(--muted)")+'">'+
-              (canCollect?"● Ready":(claimDate>today?"◷ Starts tomorrow":"✓ Collected"))+'</span>'+
+              (canCollect?"● Ready":(claimDate>today?"◷ Starts tomorrow":"Collected"))+'</span>'+
           '</div>'+
           '<div class="up-body">'+
             '<div class="up-stats">'+
@@ -149,7 +150,7 @@
         return '<div class="up-card">'+
           '<div class="up-header">'+
             '<div class="up-name">'+p.products?.name+'</div>'+
-            '<span class="status-done">✅ Completed</span>'+
+            '<span class="status-done">Completed</span>'+
           '</div>'+
           '<div class="up-body">'+
             '<div class="up-stats">'+
@@ -175,7 +176,7 @@
     var r=await fetch("/api/user?action=collect-income",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+accessToken},body:JSON.stringify({user_id:uid})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("✅ Collected "+window.GreenewAuth.money(d.amount)+"!");
+      window.GreenewAuth.toast("Collected "+window.GreenewAuth.money(d.amount)+"!");
       await load();
     } else {
       window.GreenewAuth.toast(d.error||"Nothing to collect");

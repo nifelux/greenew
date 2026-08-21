@@ -52,13 +52,14 @@
     .sb-success { background: #DDF6EA; color: #0D6548; }
     .sb-failed  { background: #FEE2E2; color: #991B1B; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="dashboard.html">‹</a>
-    <span class="topbar-title">💰 Make a payment Wallet</span>
+    <span class="topbar-title"> Make a payment Wallet</span>
     <div></div>
   </div>
 
@@ -80,7 +81,7 @@
   </div>
 
   <div class="method-card" id="methodCard" style="margin-top:16px">
-    <div id="methodBadge" class="method-badge mb-manual">🏦 Manual Bank Transfer</div>
+    <div id="methodBadge" class="method-badge mb-manual">Manual Bank Transfer</div>
     <div id="methodContent">
       <div class="transfer-info">
         <div class="ti-row"><span class="ti-label">Bank</span><span class="ti-val" id="bankName">Loading…</span></div>
@@ -99,20 +100,20 @@
 
   <!-- Shown only for Paystack — no static account number needed -->
   <div id="paystackNote" style="display:none;margin:16px;background:var(--sky-light);border-radius:var(--radius-sm);padding:16px;text-align:center">
-    <div style="font-size:28px;margin-bottom:8px">💳</div>
+    <div style="font-size:28px;margin-bottom:8px"></div>
     <div style="font-size:14px;font-weight:700;color:var(--sky-dark);margin-bottom:4px">Secure Card & Bank Payment</div>
     <div style="font-size:12px;color:var(--muted)">Click Continue to pay instantly via card, bank transfer, or USSD through Paystack's secure checkout.</div>
   </div>
 
   <!-- Shown only for iPayNG -->
   <div id="ipayngNote" style="display:none;margin:16px;background:var(--purple-light);border-radius:var(--radius-sm);padding:16px;text-align:center">
-    <div style="font-size:28px;margin-bottom:8px">⚡</div>
+    <div style="font-size:28px;margin-bottom:8px"></div>
     <div style="font-size:14px;font-weight:700;color:var(--purple);margin-bottom:4px">iPayNG Bank Transfer</div>
     <div style="font-size:12px;color:var(--muted)">Click Continue to get your transfer details via iPayNG.</div>
   </div>
 
   <div class="narration-box" id="narrationBox" style="display:none">
-    <div class="nar-label">⚠️ Use this narration / description</div>
+    <div class="nar-label">Use this narration / description</div>
     <div class="nar-code" id="narCode">—</div>
     <button class="copy-btn" style="margin-top:4px;padding:6px 14px;font-size:12px" onclick="cp('narCode')">COPY NARRATION</button>
     <p class="nar-hint" style="margin-top:6px">Include this code in your bank transfer description</p>
@@ -125,7 +126,7 @@
   </div>
 
   <div style="margin:0 16px;background:var(--sky-light);border-radius:var(--radius-sm);padding:14px">
-    <div style="font-size:11px;font-weight:700;color:var(--sky-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">ℹ️ Important</div>
+    <div style="font-size:11px;font-weight:700;color:var(--sky-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px"> Important</div>
     <ul style="list-style:none;display:flex;flex-direction:column;gap:5px">
       <li style="font-size:12px;color:var(--sky-dark);padding-left:12px;position:relative">
         <span style="position:absolute;left:0">•</span>Minimum payment: ₦500
@@ -186,13 +187,13 @@
     var iNote = document.getElementById("ipayngNote");
 
     if(m==="paystack"){
-      badge.className="method-badge mb-paystack"; badge.textContent="✅ Paystack — Card & Bank";
+      badge.className="method-badge mb-paystack"; badge.textContent="Paystack — Card & Bank";
       card.style.display="none"; pNote.style.display="block"; iNote.style.display="none";
     } else if(m==="ipayng"){
-      badge.className="method-badge mb-ipayng"; badge.textContent="⚡ iPayNG Transfer";
+      badge.className="method-badge mb-ipayng"; badge.textContent="iPayNG Transfer";
       card.style.display="none"; pNote.style.display="none"; iNote.style.display="block";
     } else {
-      badge.className="method-badge mb-manual"; badge.textContent="🏦 Manual Bank Transfer";
+      badge.className="method-badge mb-manual"; badge.textContent="Manual Bank Transfer";
       card.style.display="block"; pNote.style.display="none"; iNote.style.display="none";
     }
   }
@@ -241,7 +242,7 @@
       btn.textContent="Waiting for approval…";
       var sb=document.getElementById("statusBar");
       sb.className="status-bar sb-pending show";
-      sb.textContent="⏳ Payment sent? We'll credit your Greenew account once approved.";
+      sb.textContent="Payment sent? We'll credit your Greenew account once approved.";
       startPoll(currentRef,"manual");
     }catch(e){ window.GreenewAuth.toast("Network error"); btn.disabled=false; btn.textContent="Continue"; }
   }
@@ -258,7 +259,7 @@
         onSuccess:function(){
           var sb=document.getElementById("statusBar");
           sb.className="status-bar sb-pending show";
-          sb.textContent="⏳ Payment received. Confirming…";
+          sb.textContent="Payment received. Confirming…";
           btn.textContent="Confirming…";
           startPoll(currentRef,"paystack");
         },
@@ -278,13 +279,13 @@
         if(d.status==="completed"){
           clearInterval(pollT);
           sb.className="status-bar sb-success show";
-          sb.textContent="✅ Wallet credited successfully! Redirecting…";
+          sb.textContent="Wallet credited successfully! Redirecting…";
           setTimeout(function(){location.href="/dashboard.html";},2000);
         }
         if(d.status==="rejected"){
           clearInterval(pollT);
           sb.className="status-bar sb-failed show";
-          sb.textContent="❌ Payment rejected. Please contact support.";
+          sb.textContent="Payment rejected. Please contact support.";
         }
       }catch(e){console.warn(e);}
     },6000);

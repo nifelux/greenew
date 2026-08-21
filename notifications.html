@@ -13,12 +13,13 @@
     .notif-msg   { font-size:12px; color:var(--muted); margin-top:3px; line-height:1.4; }
     .notif-time  { font-size:11px; color:var(--muted); margin-top:4px; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="dashboard.html">‹</a>
-    <span class="topbar-title">🔔 Service alerts</span>
+    <span class="topbar-title"> Service alerts</span>
     <button onclick="markAll()" style="background:none;border:none;color:var(--purple);font-size:13px;font-weight:700;cursor:pointer">Clear All</button>
   </div>
   <div class="card" style="margin:16px;overflow:hidden" id="notifList">
@@ -42,10 +43,10 @@
   async function load(){
     var {data}=await window.sb.from("notifications").select("*").eq("user_id",uid).order("created_at",{ascending:false}).limit(50);
     var el=document.getElementById("notifList");
-    if(!data||!data.length){ el.innerHTML='<div class="empty"><div class="empty-icon">🔔</div><p>No notifications yet.</p></div>'; return; }
+    if(!data||!data.length){ el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No notifications yet.</p></div>'; return; }
     el.innerHTML=data.map(function(n){
       return '<div class="notif-item'+(n.is_read?'':' unread')+'">'+
-        '<div class="notif-icon">🔔</div>'+
+        '<div class="notif-icon"></div>'+
         '<div>'+
           '<div class="notif-title">'+n.title+'</div>'+
           '<div class="notif-msg">'+n.message+'</div>'+
@@ -60,7 +61,7 @@
   window.markAll=async function(){
     await window.sb.from("notifications").delete().eq("user_id",uid);
     window.GreenewAuth.toast("Service alerts cleared");
-    document.getElementById("notifList").innerHTML='<div class="empty"><div class="empty-icon">🔔</div><p>No notifications yet.</p></div>';
+    document.getElementById("notifList").innerHTML='<div class="empty"><div class="empty-icon"></div><p>No notifications yet.</p></div>';
   };
 })();
 </script>

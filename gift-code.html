@@ -13,12 +13,13 @@
     .gift-input input:focus { border-color:var(--purple); }
     .gift-input button { padding:14px 20px; background:var(--purple); color:#fff; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:700; cursor:pointer; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
-  <div class="topbar"><a class="back-btn" href="profile.html">‹</a><span class="topbar-title">🎁 Offer code</span><div></div></div>
+  <div class="topbar"><a class="back-btn" href="profile.html">‹</a><span class="topbar-title"> Offer code</span><div></div></div>
   <div class="gift-hero">
-    <div class="gift-icon">🎁</div>
+    <div class="gift-icon"></div>
     <div style="font-size:20px;font-weight:800">Redeem a Offer code</div>
     <div style="font-size:14px;opacity:.8;margin-top:6px">Enter your code below to receive your bonus</div>
   </div>
@@ -61,7 +62,7 @@
     var r=await fetch("/api/bonus?action=redeem-gift",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid,code})});
     var d=await r.json();
     if(d.ok){
-      al.textContent="🎉 Redeemed! "+window.GreenewAuth.money(d.amount)+" added to your Greenew account.";
+      al.textContent="Redeemed! "+window.GreenewAuth.money(d.amount)+" added to your Greenew account.";
       al.className="alert alert-success show";
       document.getElementById("codeInput").value="";
     } else {

@@ -28,17 +28,18 @@
     .streak-day.done { background:rgba(255,255,255,.25); color:#fff; border-color:transparent; }
     .streak-day.today { background:#fff; color:var(--purple); border-color:#fff; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">📅 Daily Check-In</span>
+    <span class="topbar-title"> Daily Check-In</span>
     <div></div>
   </div>
 
   <div class="checkin-card">
-    <div class="checkin-icon" id="checkinIcon">🎁</div>
+    <div class="checkin-icon" id="checkinIcon"></div>
     <div class="checkin-amount" id="checkinAmount">₦50</div>
     <div class="checkin-label">Daily bonus — claim every day!</div>
     <button class="checkin-btn" id="checkinBtn" onclick="doCheckin()">Claim ₦50 Bonus</button>
@@ -78,8 +79,8 @@
     setBonusLabels(d.bonus_amount);
     var btn=document.getElementById("checkinBtn");
     if(d.claimed){
-      btn.textContent="✅ Already Claimed Today"; btn.disabled=true;
-      document.getElementById("checkinIcon").textContent="✅";
+      btn.textContent="Already Claimed Today"; btn.disabled=true;
+      document.getElementById("checkinIcon").textContent="";
     }
 
     // Last 7 days streak
@@ -94,7 +95,7 @@
       var done=claimedDates.has(ds);
       var div=document.createElement("div");
       div.className="streak-day"+(isToday?" today":done?" done":"");
-      div.textContent=done||isToday?"✓":days[dt.getDay()];
+      div.textContent=done||isToday?"Done":days[dt.getDay()];
       streakEl.appendChild(div);
     }
 
@@ -118,9 +119,9 @@
     var d=await r.json();
     if(d.ok){
       var creditedAmount=Number(d.amount)||DAILY_BONUS;
-      window.GreenewAuth.toast("🎉 Claimed "+formatNaira(creditedAmount)+" daily bonus!");
-      btn.textContent="✅ Claimed!";
-      document.getElementById("checkinIcon").textContent="✅";
+      window.GreenewAuth.toast("Claimed "+formatNaira(creditedAmount)+" daily bonus!");
+      btn.textContent="Claimed!";
+      document.getElementById("checkinIcon").textContent="";
     } else {
       window.GreenewAuth.toast(d.error==="already_claimed"?"Already claimed today!":d.error||"Error");
       btn.disabled=false; btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";

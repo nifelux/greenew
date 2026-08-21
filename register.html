@@ -58,12 +58,13 @@
     .switch{text-align:center;font-size:14px;color:#6E8178;margin-top:18px}
     .switch a{color:#0F3D2E;font-weight:700;text-decoration:none}
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body>
 
 <div class="wrap">
   <div class="hero">
-    <div class="logo">⚡ Greenew</div>
+    <div class="logo">Greenew</div>
     <div class="logo-sub">Start your energy service journey</div>
   </div>
 
@@ -73,7 +74,7 @@
 
     <!-- Ref box — hidden by default -->
     <div id="refBox" class="ref-box" style="display:none">
-      🎉 Referred by: <span id="refName">a friend</span>
+      Referred by: <span id="refName">a friend</span>
     </div>
 
     <!-- Alert box — hidden by default -->
@@ -217,7 +218,7 @@
       /* check if email confirmation is required */
       if(!data?.session){
         showAlert(
-          "✅ Account created! Check your email for a confirmation link, then sign in.",
+          "Account created! Check your email for a confirmation link, then sign in.",
           "success"
         );
         btn.disabled = false; btn.textContent = "Create Account";
@@ -225,7 +226,7 @@
       }
 
       /* no confirmation required — sign in directly */
-      showAlert("✅ Account created! Signing you in…", "success");
+      showAlert("Account created! Signing you in…", "success");
 
       var {error:loginErr} = await window.sb.auth.signInWithPassword({email, password:pass});
       if(loginErr){

@@ -44,21 +44,22 @@
       font-size:14px; font-weight:700; color:var(--muted);
     }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 
 <div class="page-wrap">
   <div class="topbar">
-    <span class="topbar-title">📦 Plans</span>
+    <span class="topbar-title"> Plans</span>
     <span class="vip-badge vip-0" data-vip style="font-size:11px">Customer</span>
   </div>
 
   <div class="tabs" id="tabs">
-    <button class="tab on" data-tab="newbie" onclick="switchTab(this,'newbie')">🌱 Newbie</button>
-    <button class="tab" data-tab="vip1"    onclick="switchTab(this,'vip1')">👑 Service tier 1</button>
-    <button class="tab" data-tab="vip2"    onclick="switchTab(this,'vip2')">💎 Service tier 2</button>
-    <button class="tab" data-tab="vip3"    onclick="switchTab(this,'vip3')">🔷 Service tier 3</button>
-    <button class="tab" data-tab="vip4"    onclick="switchTab(this,'vip4')">⚡ Service tier 4</button>
+    <button class="tab on" data-tab="newbie" onclick="switchTab(this,'newbie')"> Newbie</button>
+    <button class="tab" data-tab="vip1"    onclick="switchTab(this,'vip1')"> Service tier 1</button>
+    <button class="tab" data-tab="vip2"    onclick="switchTab(this,'vip2')"> Service tier 2</button>
+    <button class="tab" data-tab="vip3"    onclick="switchTab(this,'vip3')"> Service tier 3</button>
+    <button class="tab" data-tab="vip4"    onclick="switchTab(this,'vip4')">Service tier 4</button>
   </div>
 
   <!-- Service tier requirements info -->
@@ -88,10 +89,10 @@
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon">🏠</span>Home</button>
-  <button class="nav-item active" onclick="location.href='products.html'"><span class="nav-icon">📦</span>Plans</button>
-  <button class="nav-item" onclick="location.href='team.html'"><span class="nav-icon">👥</span>Household</button>
-  <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon">👤</span>Profile</button>
+  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon"></span>Home</button>
+  <button class="nav-item active" onclick="location.href='products.html'"><span class="nav-icon"></span>Plans</button>
+  <button class="nav-item" onclick="location.href='team.html'"><span class="nav-icon"></span>Household</button>
+  <button class="nav-item" onclick="location.href='profile.html'"><span class="nav-icon"></span>Profile</button>
 </nav>
 <div id="toast"></div>
 
@@ -152,7 +153,7 @@
     var {data:prods} = await query;
 
     if(!prods||!prods.length){
-      el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><p>No products available.</p></div>';
+      el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No products available.</p></div>';
       return;
     }
 
@@ -176,9 +177,9 @@
         '</div>'+
         '<div class="product-footer">'+
           (bought
-            ? '<div class="bought-chip">✅ Already Purchased</div>'
+            ? '<div class="bought-chip">Already Purchased</div>'
             : locked
-              ? '<div class="bought-chip">🔒 '+(p.status==="locked"?"Locked by Admin":"Service tier "+vipLevel+" Required")+'</div>'
+              ? '<div class="bought-chip">'+(p.status==="locked"?"Locked by Admin":"Service tier "+vipLevel+" Required")+'</div>'
               : '<button class="btn btn-primary" onclick="openModal(\''+p.id+'\',\''+p.name+'\','+p.price+')">Buy Now</button>'
           )+
         '</div>'+
@@ -193,7 +194,7 @@
     document.getElementById("modalDetails").innerHTML =
       '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--muted)">Price</span><strong>'+window.GreenewAuth.money(price)+'</strong></div>'+
       '<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Available account balance</span><strong style="color:'+(walletBal>=price?'var(--success)':'var(--danger)')+'">'+window.GreenewAuth.money(walletBal)+'</strong></div>'+
-      (walletBal < price ? '<div style="margin-top:10px;font-size:12px;color:var(--danger)">⚠️ Insufficient account balance. Please add funds first.</div>' : '');
+      (walletBal < price ? '<div style="margin-top:10px;font-size:12px;color:var(--danger)">Insufficient account balance. Please add funds first.</div>' : '');
     document.getElementById("modalAlert").className="alert";
     var modal=document.getElementById("modal");
     modal.style.display="flex";
@@ -219,7 +220,7 @@
       btn.disabled=false; btn.textContent="Confirm"; return;
     }
 
-    window.GreenewAuth.toast("✅ Plan purchased successfully!");
+    window.GreenewAuth.toast("Plan purchased successfully!");
     closeModal();
     // Refresh
     var {data:w}=await window.sb.from("wallets").select("balance").eq("user_id",userId).single();

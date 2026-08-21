@@ -11,12 +11,13 @@
     .s-approved { background:#DDF6EA; color:#0D6548; }
     .s-rejected { background:#FEE2E2; color:#991B1B; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">📤 Withdrawal Activity</span>
+    <span class="topbar-title"> Withdrawal Activity</span>
     <div></div>
   </div>
   <div class="card" style="margin:16px;overflow:hidden" id="histList">
@@ -37,7 +38,7 @@
     var d=await r.json();
     var ws=d.withdrawals||[];
     var el=document.getElementById("histList");
-    if(!ws.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📤</div><p>No withdrawals yet.</p></div>'; return; }
+    if(!ws.length){ el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No withdrawals yet.</p></div>'; return; }
     el.innerHTML=ws.map(function(w){
       var sc="s-"+(w.status||"pending");
       return '<div class="list-item">'+

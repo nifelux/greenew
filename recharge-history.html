@@ -14,12 +14,13 @@
     .s-completed { background:#DDF6EA; color:#0D6548; }
     .s-rejected  { background:#FEE2E2; color:#991B1B; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">📥 Make a payment Activity</span>
+    <span class="topbar-title"> Make a payment Activity</span>
     <div></div>
   </div>
   <div class="hist-tabs">
@@ -56,7 +57,7 @@
   function render(){
     var list=activeFilter==="all"?allDeps:allDeps.filter(function(d){return d.status===activeFilter;});
     var el=document.getElementById("histList");
-    if(!list.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📥</div><p>No payments found.</p></div>'; return; }
+    if(!list.length){ el.innerHTML='<div class="empty"><div class="empty-icon"></div><p>No payments found.</p></div>'; return; }
     el.innerHTML=list.map(function(d){
       var sc="s-"+(d.status||"pending");
       return '<div class="list-item">'+

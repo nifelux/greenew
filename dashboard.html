@@ -82,6 +82,7 @@
     .prog-bar { height:4px; background:var(--bg); border-radius:4px; margin-top:6px; overflow:hidden; width:120px; }
     .prog-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--sky)); border-radius:4px; }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body
   data-supabase-url="YOUR_SUPABASE_URL"
@@ -98,7 +99,7 @@
     <div style="display:flex;gap:8px;align-items:center">
       <span class="vip-badge vip-0" data-vip style="font-size:11px">Customer</span>
       <a class="icon-btn" href="notifications.html">
-        🔔
+        Alerts
         <span class="badge" id="notifBadge" style="display:none">!</span>
       </a>
     </div>
@@ -147,28 +148,28 @@
   <!-- Quick actions -->
   <div class="quick-grid anim anim-3">
     <a class="quick-item" href="products.html">
-      <span class="quick-item-icon">📦</span>Plans
+      <span class="quick-item-icon" aria-hidden="true"></span>Plans
     </a>
     <a class="quick-item" href="team.html">
-      <span class="quick-item-icon">👥</span>My Household
+      <span class="quick-item-icon" aria-hidden="true"></span>My Household
     </a>
     <a class="quick-item" href="daily-checkin.html">
-      <span class="quick-item-icon">📅</span>Check In
+      <span class="quick-item-icon" aria-hidden="true"></span>Check In
     </a>
     <a class="quick-item" href="monthly-salary.html">
-      <span class="quick-item-icon">💰</span>Service credits
+      <span class="quick-item-icon" aria-hidden="true"></span>Service credits
     </a>
     <a class="quick-item" href="gift-code.html">
-      <span class="quick-item-icon">🎁</span>Offer code
+      <span class="quick-item-icon" aria-hidden="true"></span>Offer code
     </a>
     <a class="quick-item" href="recharge-history.html">
-      <span class="quick-item-icon">📋</span>Activity
+      <span class="quick-item-icon" aria-hidden="true"></span>Activity
     </a>
     <a class="quick-item" href="messages.html">
-      <span class="quick-item-icon">✉️</span>Support messages
+      <span class="quick-item-icon" aria-hidden="true"></span>Support messages
     </a>
     <a class="quick-item" href="bank-card.html">
-      <span class="quick-item-icon">💳</span>Payment method
+      <span class="quick-item-icon" aria-hidden="true"></span>Payment method
     </a>
   </div>
 
@@ -192,24 +193,19 @@
 </div>
 
 <!-- Welcome modal -->
-<div id="welcomeOverlay" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)">
-  <div id="welcomeCard" style="background:#fff;border-radius:24px;max-width:380px;width:100%;overflow:hidden;transform:scale(.92);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;box-shadow:0 24px 60px rgba(0,0,0,.3)">
-    <div style="background:linear-gradient(135deg,#0F3D2E 0%,#149A68 100%);padding:32px 24px 28px;text-align:center;color:#fff;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,.08);border-radius:50%"></div>
-      <button onclick="closeWelcome()" style="position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2">✕</button>
-      <div style="font-size:44px;position:relative;z-index:1">👋</div>
-      <div style="font-size:20px;font-weight:800;margin-top:10px;position:relative;z-index:1">Welcome to Greenew<span id="welcomeUserName"></span>!</div>
-      <div style="font-size:13px;opacity:.85;margin-top:6px;position:relative;z-index:1">Your energy account is ready to manage</div>
+<div id="welcomeOverlay" class="welcome-backdrop" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div id="welcomeCard" class="welcome-dialog" style="width:100%;max-width:380px;overflow:hidden;transform:scale(.92);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s">
+    <div class="welcome-hero" style="position:relative;overflow:hidden;color:#fff;text-align:center">
+      <div class="welcome-orb" aria-hidden="true"></div>
+      <button class="welcome-close" onclick="closeWelcome()" aria-label="Close announcement" style="position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer">Close</button>
+      <div class="welcome-mark" aria-hidden="true"></div>
+      <div id="welcomeTitle" class="welcome-title" style="position:relative;z-index:1;font-weight:800">Welcome to Greenew<span id="welcomeUserName"></span></div>
+      <div class="welcome-subtitle" style="position:relative;z-index:1;font-size:13px">Your account is ready for a clearer way to manage growth.</div>
     </div>
-    <div style="padding:22px 24px 24px">
-      <p style="font-size:14px;color:#475569;line-height:1.6;margin-bottom:18px;text-align:center">
-        Join our official Greenew service updates for instant updates, payment proofs, refund alerts, and to connect with other members.
-      </p>
-      <a href="https://t.me/+TKs6SbTcik40NWE0" target="_blank" rel="noopener"
-         style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:50px;background:linear-gradient(135deg,#0F3D2E,#149A68);color:#fff;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 6px 18px rgba(124,58,237,.3)">
-        ✈️ View service updates
-      </a>
-      <button onclick="closeWelcome()" style="width:100%;padding:12px;border:none;background:none;color:#8BA296;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px">Maybe later</button>
+    <div class="welcome-body">
+      <p class="welcome-copy" style="margin-bottom:18px;text-align:center;font-size:14px;line-height:1.6">Join official Greenew service updates for operational notices, payment confirmations, and account support.</p>
+      <a class="welcome-action" href="https://t.me/+TKs6SbTcik40NWE0" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;width:100%;padding:14px;color:#fff;font-size:15px;font-weight:700;text-decoration:none">View service updates</a>
+      <button class="welcome-dismiss" onclick="closeWelcome()" style="width:100%;padding:12px;border:0;background:none;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px">Maybe later</button>
     </div>
   </div>
 </div>
@@ -217,16 +213,16 @@
 <!-- Bottom nav -->
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="location.href='dashboard.html'">
-    <span class="nav-icon">🏠</span>Home
+    <span class="nav-icon" aria-hidden="true"></span>Home
   </button>
   <button class="nav-item" onclick="location.href='products.html'">
-    <span class="nav-icon">📦</span>Plans
+    <span class="nav-icon" aria-hidden="true"></span>Plans
   </button>
   <button class="nav-item" onclick="location.href='team.html'">
-    <span class="nav-icon">👥</span>Household
+    <span class="nav-icon" aria-hidden="true"></span>Household
   </button>
   <button class="nav-item" onclick="location.href='profile.html'">
-    <span class="nav-icon">👤</span>Profile
+    <span class="nav-icon" aria-hidden="true"></span>Profile
   </button>
 </nav>
 
@@ -265,7 +261,7 @@
 
     var ap = document.getElementById("activePlans");
     if(!prods||!prods.length){
-      ap.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><p>No active energy plans yet.<br><a href="products.html" style="color:var(--purple);font-weight:700">Browse energy plans →</a></p></div>';
+      ap.innerHTML = '<div class="empty"><div class="empty-icon" aria-hidden="true"></div><p>No active energy plans yet.<br><a href="products.html" style="color:var(--purple);font-weight:700">Browse energy plans →</a></p></div>';
     } else {
       var totalDaily = prods.reduce(function(s,p){return s+Number(p.daily_income||0);},0);
       document.getElementById("incomeStrip").style.display="flex";
@@ -307,10 +303,9 @@
     if(count>0){ var b=document.getElementById("notifBadge"); b.style.display="flex"; b.textContent=count>9?"9+":count; }
   });
 
-  /* ── Welcome modal — shows once per device until dismissed ── */
+  /* ── Greenew announcement — opens on every dashboard visit ── */
   function maybeShowWelcome(uid){
-    var seenKey = "greenew_welcome_seen_" + uid;
-    if(localStorage.getItem(seenKey)) return;
+    if(!uid) return;
 
     var nameEl = document.getElementById("welcomeUserName");
     var fullName = document.querySelector('[data-auth="full_name"]')?.textContent;
@@ -326,7 +321,6 @@
       });
     }, 700);
 
-    localStorage.setItem(seenKey, "1");
   }
 
   window.closeWelcome = function(){

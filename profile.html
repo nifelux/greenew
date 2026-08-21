@@ -47,13 +47,14 @@
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
   </style>
+  <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
 <body data-supabase-url="YOUR_SUPABASE_URL" data-supabase-anon="YOUR_SUPABASE_ANON_KEY">
 
 <div class="page-wrap">
   <!-- Hero -->
   <div class="profile-hero">
-    <div class="avatar">👤</div>
+    <div class="avatar"></div>
     <div class="profile-name" data-auth="full_name">User</div>
     <div class="profile-email" data-auth="email">—</div>
     <div class="profile-ref">Referral Code: <span data-auth="referral_code">—</span></div>
@@ -83,12 +84,12 @@
   <div class="section" style="margin-top:0">
     <div class="menu-group">
       <a class="menu-item" href="my-products.html">
-        <div class="menu-icon purple">📦</div>
+        <div class="menu-icon purple"></div>
         <div class="flex-1"><div class="menu-label">My active plans</div><div class="menu-sub">View & collect daily income</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="bank-card.html">
-        <div class="menu-icon sky">💳</div>
+        <div class="menu-icon sky"></div>
         <div class="flex-1"><div class="menu-label">Payment method</div><div class="menu-sub">Manage refund accounts</div></div>
         <div class="menu-arrow">›</div>
       </a>
@@ -100,12 +101,12 @@
   <div class="section" style="margin-top:0">
     <div class="menu-group">
       <a class="menu-item" href="recharge-history.html">
-        <div class="menu-icon green">📥</div>
+        <div class="menu-icon green"></div>
         <div class="flex-1"><div class="menu-label">Make a payment Activity</div><div class="menu-sub">All payment records</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="withdrawal-history.html">
-        <div class="menu-icon orange">📤</div>
+        <div class="menu-icon orange"></div>
         <div class="flex-1"><div class="menu-label">Refund Activity</div><div class="menu-sub">All refund records</div></div>
         <div class="menu-arrow">›</div>
       </a>
@@ -117,17 +118,17 @@
   <div class="section" style="margin-top:0">
     <div class="menu-group">
       <a class="menu-item" href="daily-checkin.html">
-        <div class="menu-icon purple">📅</div>
+        <div class="menu-icon purple"></div>
         <div class="flex-1"><div class="menu-label">Daily Check-In</div><div class="menu-sub">Claim ₦50 every day</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="monthly-salary.html">
-        <div class="menu-icon sky">💰</div>
+        <div class="menu-icon sky"></div>
         <div class="flex-1"><div class="menu-label">Monthly Service credits</div><div class="menu-sub">5% of team payments — claim 5th</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="gift-code.html">
-        <div class="menu-icon green">🎁</div>
+        <div class="menu-icon green"></div>
         <div class="flex-1"><div class="menu-label">Offer code</div><div class="menu-sub">Redeem bonus gift codes</div></div>
         <div class="menu-arrow">›</div>
       </a>
@@ -139,12 +140,12 @@
   <div class="section" style="margin-top:0">
     <div class="menu-group">
       <a class="menu-item" href="change-password.html">
-        <div class="menu-icon sky">🔐</div>
+        <div class="menu-icon sky"></div>
         <div class="flex-1"><div class="menu-label">Change Password</div><div class="menu-sub">Keep your account secure</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="notifications.html">
-        <div class="menu-icon orange">🔔</div>
+        <div class="menu-icon orange"></div>
         <div class="flex-1"><div class="menu-label">Service alerts</div><div class="menu-sub" id="notifSub">—</div></div>
         <div class="menu-arrow">›</div>
       </a>
@@ -156,32 +157,32 @@
   <div class="section" style="margin-top:0">
     <div class="menu-group">
       <a class="menu-item" href="messages.html">
-        <div class="menu-icon purple">✉️</div>
+        <div class="menu-icon purple"></div>
         <div class="flex-1"><div class="menu-label">Support messages</div><div class="menu-sub" id="msgSub">From admin</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="contact.html">
-        <div class="menu-icon sky">📞</div>
+        <div class="menu-icon sky"></div>
         <div class="flex-1"><div class="menu-label">Contact Support</div><div class="menu-sub">Get help from us</div></div>
         <div class="menu-arrow">›</div>
       </a>
       <a class="menu-item" href="about.html">
-        <div class="menu-icon green">ℹ️</div>
+        <div class="menu-icon green"></div>
         <div class="flex-1"><div class="menu-label">About Greenew</div><div class="menu-sub">Learn about our platform</div></div>
         <div class="menu-arrow">›</div>
       </a>
     </div>
   </div>
 
-  <button class="logout-btn" id="logoutBtn">🚪 Sign Out</button>
+  <button class="logout-btn" id="logoutBtn">Sign Out</button>
   <div style="height:16px"></div>
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon">🏠</span>Home</button>
-  <button class="nav-item" onclick="location.href='products.html'"><span class="nav-icon">📦</span>Plans</button>
-  <button class="nav-item" onclick="location.href='team.html'"><span class="nav-icon">👥</span>Household</button>
-  <button class="nav-item active" onclick="location.href='profile.html'"><span class="nav-icon">👤</span>Profile</button>
+  <button class="nav-item" onclick="location.href='dashboard.html'"><span class="nav-icon"></span>Home</button>
+  <button class="nav-item" onclick="location.href='products.html'"><span class="nav-icon"></span>Plans</button>
+  <button class="nav-item" onclick="location.href='team.html'"><span class="nav-icon"></span>Household</button>
+  <button class="nav-item active" onclick="location.href='profile.html'"><span class="nav-icon"></span>Profile</button>
 </nav>
 <div id="toast"></div>
 
