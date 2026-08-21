@@ -383,9 +383,9 @@
     <div class="a-card">
       <div class="a-card-title">Manual Account Details</div>
       <div style="padding:14px;font-size:14px;line-height:2;color:#8BA296">
-        <div>Bank: <strong style="color:#fff">OPay</strong></div>
-        <div>Account: <strong style="color:#fff">6556493720</strong></div>
-        <div>Name: <strong style="color:#fff">OLUWANIFEMI ABDULLAHI OLUDE</strong></div>
+        <div>Bank: <strong id="manualBankName" style="color:#fff">Loading…</strong></div>
+        <div>Account: <strong id="manualAccountNumber" style="color:#fff">Loading…</strong></div>
+        <div>Name: <strong id="manualAccountName" style="color:#fff">Loading…</strong></div>
       </div>
     </div>
     <div class="a-card">
@@ -1047,7 +1047,20 @@
   async function loadMethod(){
     var r=await fetch("/api/deposit?action=method");
     var d=await r.json();
+    applyBankDetails(d);
     applyMethod(d.method||"manual");
+  }
+
+  function applyBankDetails(d){
+    var bank=d?.bank_name||"Bank details unavailable";
+    var number=d?.account_number||"Account number unavailable";
+    var name=d?.account_name||"Account name unavailable";
+    var bankEl=document.getElementById("manualBankName");
+    var numberEl=document.getElementById("manualAccountNumber");
+    var nameEl=document.getElementById("manualAccountName");
+    if(bankEl) bankEl.textContent=bank;
+    if(numberEl) numberEl.textContent=number;
+    if(nameEl) nameEl.textContent=name;
   }
 
   function applyMethod(m){
@@ -1147,6 +1160,7 @@
   window.loadExtraSettings=async function(){
     var r=await fetch("/api/admin?action=extra-settings&admin_id="+adminId); var d=await r.json(); if(!d.ok) return;
     var s=d.settings||{};
+    applyBankDetails(s);
     setExtraValue("settingBankName",s.bank_name); setExtraValue("settingAccountName",s.account_name); setExtraValue("settingAccountNumber",s.account_number);
     setExtraValue("welcomeBonusInput",s.welcome_bonus||0); setExtraValue("withdrawalFeeInput",s.withdrawal_fee_percent||0); setExtraValue("referralDepthInput",s.referral_depth||3);
     setExtraValue("referralL1Input",s.referral_percent_l1||5); setExtraValue("referralL2Input",s.referral_percent_l2||2); setExtraValue("referralL3Input",s.referral_percent_l3||1);
@@ -1159,7 +1173,7 @@
     var btn=document.getElementById("extraSettingsBtn"), al=document.getElementById("extraSettingsAlert"); btn.disabled=true; btn.textContent="Saving…"; al.className="alert";
     var settings={bank_name:document.getElementById("settingBankName").value.trim(),account_name:document.getElementById("settingAccountName").value.trim(),account_number:document.getElementById("settingAccountNumber").value.trim(),welcome_bonus:document.getElementById("welcomeBonusInput").value||0,withdrawal_fee_percent:document.getElementById("withdrawalFeeInput").value||0,referral_depth:document.getElementById("referralDepthInput").value||3,referral_percent_l1:document.getElementById("referralL1Input").value||0,referral_percent_l2:document.getElementById("referralL2Input").value||0,referral_percent_l3:document.getElementById("referralL3Input").value||0,support_email:document.getElementById("supportEmailInput").value.trim(),service_phone:document.getElementById("servicePhoneInput").value.trim(),telegram_link:document.getElementById("telegramLinkInput").value.trim(),require_invest_before_withdraw:document.getElementById("investGateToggle").checked,require_active_referral_to_withdraw:document.getElementById("referralGateToggle").checked,vip_enabled:document.getElementById("vipEnabledToggle").checked};
     var r=await fetch("/api/admin?action=set-extra-settings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({settings,admin_id:adminId})}); var d=await r.json();
-    if(d.ok){ window.GreenewAuth.toast("✅ Operations settings saved"); } else { al.textContent=d.error||"Could not save settings"; al.className="alert alert-error show"; }
+    if(d.ok){ applyBankDetails(d.settings||settings); window.GreenewAuth.toast("✅ Operations settings saved"); } else { al.textContent=d.error||"Could not save settings"; al.className="alert alert-error show"; }
     btn.disabled=false; btn.textContent="Save Operations Settings";
   };
   window.toggleUserActive=async function(id,isActive,btn){
