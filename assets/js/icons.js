@@ -59,6 +59,8 @@
       if (/contact|phone|support/.test(host)) return 'support';
       return 'info';
     }
+    if (el.classList.contains('gift-icon')) return 'gift';
+    if (el.classList.contains('checkin-icon')) return 'calendar';
     if (el.classList.contains('empty-icon')) return 'list';
     if (el.classList.contains('avatar')) return 'user';
     if (el.classList.contains('vt-icon')) return 'chart';
@@ -71,7 +73,7 @@
   }
 
   function render() {
-    document.querySelectorAll('.quick-item-icon,.nav-icon,.menu-icon,.empty-icon,.avatar,.vt-icon,.info-icon,.saved-card-icon,.lock-icon,.ci-icon,.notif-icon,.welcome-mark').forEach(function (el) {
+    document.querySelectorAll('.quick-item-icon,.nav-icon,.menu-icon,.gift-icon,.checkin-icon,.empty-icon,.avatar,.vt-icon,.info-icon,.saved-card-icon,.lock-icon,.ci-icon,.notif-icon,.welcome-mark').forEach(function (el) {
       var name = el.classList.contains('welcome-mark') ? 'mark' : resolve(el);
       if (!name || !icons[name]) return;
       el.classList.add('g-icon');
