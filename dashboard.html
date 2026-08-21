@@ -105,6 +105,16 @@
     </div>
   </div>
 
+  <!-- Repository-hosted Greenew visual -->
+  <div class="dashboard-image-card anim anim-1" aria-label="Greenew brand visual">
+    <img id="dashboardBrandImage" class="dashboard-brand-image" src="assets/images/greenew.png" alt="Greenew" onerror="this.onerror=null;this.style.display='none';document.getElementById('dashboardImageFallback').style.display='grid';"/>
+    <div id="dashboardImageFallback" class="dashboard-image-fallback" style="display:none">
+      <span class="fallback-mark" data-icon="mark" aria-hidden="true"></span>
+      <strong>Greenew</strong>
+      <span>Grow today. Earn tomorrow.</span>
+    </div>
+  </div>
+
   <!-- Wallet card -->
   <div class="wallet-card anim anim-1">
     <div style="position:relative;z-index:1">
@@ -146,18 +156,21 @@
   </div>
 
   <!-- Quick actions -->
-  <div class="quick-grid anim anim-3">
-    <a class="quick-item" href="products.html">
-      <span class="quick-item-icon" aria-hidden="true"></span>Plans
+  <div class="quick-grid reference-actions anim anim-3">
+    <a class="quick-item" href="recharge.html">
+      <span class="quick-item-icon" data-icon="wallet" aria-hidden="true"></span>Recharge
+    </a>
+    <a class="quick-item" href="withdraw.html">
+      <span class="quick-item-icon" data-icon="arrowDown" aria-hidden="true"></span>Withdraw
     </a>
     <a class="quick-item" href="team.html">
-      <span class="quick-item-icon" aria-hidden="true"></span>My Household
+      <span class="quick-item-icon" data-icon="users" aria-hidden="true"></span>Team
     </a>
     <a class="quick-item" href="daily-checkin.html">
-      <span class="quick-item-icon" aria-hidden="true"></span>Check In
+      <span class="quick-item-icon" data-icon="calendar" aria-hidden="true"></span>Check-in
     </a>
     <a class="quick-item" href="monthly-salary.html">
-      <span class="quick-item-icon" aria-hidden="true"></span>Service credits
+      <span class="quick-item-icon" data-icon="chart" aria-hidden="true"></span>Service credits
     </a>
     <a class="quick-item" href="gift-code.html">
       <span class="quick-item-icon" aria-hidden="true"></span>Offer code
@@ -193,7 +206,7 @@
 </div>
 
 <!-- Welcome modal -->
-<div id="welcomeOverlay" class="welcome-backdrop" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;padding:20px">
+<div id="welcomeOverlay" class="welcome-backdrop reference-popup" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;padding:20px">
   <div id="welcomeCard" class="welcome-dialog" style="width:100%;max-width:380px;overflow:hidden;transform:scale(.92);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s">
     <div class="welcome-hero" style="position:relative;overflow:hidden;color:#fff;text-align:center">
       <div class="welcome-orb" aria-hidden="true"></div>
@@ -203,9 +216,19 @@
       <div class="welcome-subtitle" style="position:relative;z-index:1;font-size:13px">Your account is ready for a clearer way to manage growth.</div>
     </div>
     <div class="welcome-body">
-      <p class="welcome-copy" style="margin-bottom:18px;text-align:center;font-size:14px;line-height:1.6">Join official Greenew service updates for operational notices, payment confirmations, and account support.</p>
-      <a class="welcome-action" href="https://t.me/+TKs6SbTcik40NWE0" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;width:100%;padding:14px;color:#fff;font-size:15px;font-weight:700;text-decoration:none">View service updates</a>
-      <button class="welcome-dismiss" onclick="closeWelcome()" style="width:100%;padding:12px;border:0;background:none;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px">Maybe later</button>
+      <p class="welcome-copy">Greenew account rules and benefits</p>
+      <div class="welcome-rules" role="list">
+        <div class="welcome-rule" role="listitem"><b>1</b><span>Minimum deposit: <strong>₦3,000</strong>.</span></div>
+        <div class="welcome-rule" role="listitem"><b>2</b><span>Minimum withdrawal: <strong>₦1,000</strong>.</span></div>
+        <div class="welcome-rule" role="listitem"><b>3</b><span>Daily check-in bonus: <strong>₦50</strong>.</span></div>
+        <div class="welcome-rule" role="listitem"><b>4</b><span>Income from a purchased plan becomes claimable from the <strong>next day</strong>.</span></div>
+        <div class="welcome-rule" role="listitem"><b>5</b><span>Referral rewards are credited according to the active Greenew settings.</span></div>
+        <div class="welcome-rule" role="listitem"><b>6</b><span>Withdrawals are reviewed during the published service window.</span></div>
+      </div>
+      <div class="welcome-links">
+        <a class="welcome-action" href="https://t.me/+TKs6SbTcik40NWE0" target="_blank" rel="noopener">Service updates</a>
+        <button class="welcome-action welcome-dismiss" onclick="closeWelcome()" type="button">Continue</button>
+      </div>
     </div>
   </div>
 </div>
@@ -231,7 +254,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="assets/js/greenew.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
-<script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/auth.js" defer></script>
+<script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   "use strict";
