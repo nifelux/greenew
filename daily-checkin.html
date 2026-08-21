@@ -39,7 +39,7 @@
   </div>
 
   <div class="checkin-card">
-    <div class="checkin-icon" id="checkinIcon"></div>
+    <div class="checkin-icon g-icon" id="checkinIcon" data-icon="calendar" aria-hidden="true"></div>
     <div class="checkin-amount" id="checkinAmount">₦50</div>
     <div class="checkin-label">Daily bonus — claim every day!</div>
     <button class="checkin-btn" id="checkinBtn" onclick="doCheckin()">Claim ₦50 Bonus</button>
@@ -82,6 +82,7 @@
     if(d.claimed){
       btn.textContent="Already Claimed Today"; btn.disabled=true;
       document.getElementById("checkinIcon").textContent="";
+      if(window.GreenewIcons) window.GreenewIcons.render();
     }
 
     // Last 7 days streak
@@ -123,6 +124,7 @@
       window.GreenewAuth.toast("Claimed "+formatNaira(creditedAmount)+" daily bonus!");
       btn.textContent="Claimed!";
       document.getElementById("checkinIcon").textContent="";
+      if(window.GreenewIcons) window.GreenewIcons.render();
     } else {
       window.GreenewAuth.toast(d.error==="already_claimed"?"Already claimed today!":d.error||"Error");
       btn.disabled=false; btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";
