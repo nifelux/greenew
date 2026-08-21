@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Refund Activity</title>
+  <title>Greenew — Withdrawal Activity</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -16,7 +16,7 @@
 <div class="page-wrap">
   <div class="topbar">
     <a class="back-btn" href="profile.html">‹</a>
-    <span class="topbar-title">📤 Refund Activity</span>
+    <span class="topbar-title">📤 Withdrawal Activity</span>
     <div></div>
   </div>
   <div class="card" style="margin:16px;overflow:hidden" id="histList">
@@ -35,9 +35,9 @@
     var s=await window.GreenewAuth.requireAuth(); if(!s)return;
     var r=await fetch("/api/withdraw?user_id="+s.user.id);
     var d=await r.json();
-    var ws=d.refunds||[];
+    var ws=d.withdrawals||[];
     var el=document.getElementById("histList");
-    if(!ws.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📤</div><p>No refunds yet.</p></div>'; return; }
+    if(!ws.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📤</div><p>No withdrawals yet.</p></div>'; return; }
     el.innerHTML=ws.map(function(w){
       var sc="s-"+(w.status||"pending");
       return '<div class="list-item">'+
