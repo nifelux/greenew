@@ -219,7 +219,7 @@ module.exports = async function handler(req, res) {
       await sendMessage(chatId,
         "👋 <b>Welcome to Greenew Deposit Bot!</b>\n\n" +
         "After making your bank transfer, send me your <b>narration code</b> " +
-        "(e.g. <code>VTLA1B2C3D4E5F</code>) and I'll check it for you.\n\n" +
+        "(e.g. <code>GRNA1B2C3D4E5F</code>) and I'll check it for you.\n\n" +
         "⚠️ You must include the narration in your transfer description — otherwise we can't match your payment."
       );
       return res.status(200).json({ ok: true });
@@ -308,7 +308,7 @@ module.exports = async function handler(req, res) {
 
     await sendMessage(chatId,
       "🤔 I couldn't find a pending deposit matching that.\n\n" +
-      "Send me your narration code from the Recharge page (e.g. <code>VTLA1B2C3D4E5F</code>), or /start for help."
+      "Send me your narration code from the Recharge page (e.g. <code>GRNA1B2C3D4E5F</code>), or /start for help."
     );
     return res.status(200).json({ ok: true });
   }

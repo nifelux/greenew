@@ -174,15 +174,15 @@ module.exports = async function(req, res) {
     const payload=req.body?.settings||{};
     const rows=allowed.filter(key=>payload[key]!==undefined).map(key=>({ key, value:String(payload[key]), updated_at:new Date().toISOString() }));
     if(!rows.length) return res.status(400).json({ error:"No settings supplied" });
-    const { error } = await supabase.from("site_settings").upsert(rows);
+    const { data:saved,error } = await supabase.from("site_settings").upsert(rows,{ onConflict:"key" }).select("key,value");
     if(error) return res.status(500).json({ error:error.message });
-    return res.json({ ok:true });
+    return res.json({ ok:true, settings:Object.fromEntries((saved||[]).map(s=>[s.key,s.value])) });
   }
 
   if(action==="set-method") {
     const { method } = req.body;
     if(!["manual","paystack","ipayng"].includes(method)) return res.status(400).json({ error:"Invalid method" });
-    const { error } = await supabase.from("site_settings").upsert({ key:"deposit_method", value:method, updated_at:new Date().toISOString() });
+    const { error } = await supabase.from("site_settings").upsert({ key:"deposit_method", value:method, updated_at:new Date().toISOString() },{ onConflict:"key" });
     if(error) return res.status(500).json({ error:error.message });
     return res.json({ ok:true, method });
   }
@@ -190,7 +190,7 @@ module.exports = async function(req, res) {
   if(action==="set-withdrawal-lock") {
     const { locked } = req.body;
     const { error } = await supabase.from("site_settings")
-      .upsert({ key:"withdrawals_locked", value: locked ? "true" : "false", updated_at:new Date().toISOString() });
+      .upsert({ key:"withdrawals_locked", value: locked ? "true" : "false", updated_at:new Date().toISOString() },{ onConflict:"key" });
     if(error) return res.status(500).json({ error:error.message });
     return res.json({ ok:true, locked: !!locked });
   }
@@ -203,10 +203,11 @@ module.exports = async function(req, res) {
     if(isNaN(maxNum) || maxNum < 0) return res.status(400).json({ error:"Invalid maximum amount" });
     if(maxNum > 0 && maxNum < minNum) return res.status(400).json({ error:"Maximum must be greater than minimum (or 0 for no maximum)" });
 
-    await supabase.from("site_settings").upsert([
+    const { error } = await supabase.from("site_settings").upsert([
       { key:"min_withdraw", value:String(minNum), updated_at:new Date().toISOString() },
       { key:"max_withdraw", value:String(maxNum), updated_at:new Date().toISOString() },
-    ]);
+    ],{ onConflict:"key" });
+    if(error) return res.status(500).json({ error:error.message });
     return res.json({ ok:true, min:minNum, max:maxNum });
   }
 

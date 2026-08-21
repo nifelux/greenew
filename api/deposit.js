@@ -16,7 +16,7 @@ function genNarration(uid) {
   // No dashes — bank/PSP transfer description fields often strip or mangle
   // special characters, which broke matching against Gmail credit alerts.
   // Plain uppercase alphanumeric survives every bank's narration field intact.
-  return `VTL${uid.replace(/-/g,"").slice(0,5).toUpperCase()}${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
+  return `GRN${uid.replace(/-/g,"").slice(0,5).toUpperCase()}${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
 }
 
 module.exports = async function(req, res) {
@@ -75,8 +75,10 @@ module.exports = async function(req, res) {
       });
     } catch(e) { console.warn("[deposit] Telegram notify failed:", e.message); }
 
+    const { data:bankRows } = await supabase.from("site_settings").select("key,value").in("key",["bank_name","account_name","account_number"]);
+    const bank=Object.fromEntries((bankRows||[]).map(s=>[s.key,s.value]));
     return res.json({ ok:true, reference, narration, amount:num,
-      bank_name:"OPay", account_number:"6556493720", account_name:"OLUWANIFEMI ABDULLAHI OLUDE" });
+      bank_name:bank.bank_name||"Greenew Energy Services", account_number:bank.account_number||"", account_name:bank.account_name||"Greenew Energy Services Ltd." });
   }
 
   // POST: initiate-paystack
