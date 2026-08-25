@@ -5,7 +5,7 @@
  *
  * 1. POST ?action=ingest
  *    Google Apps Script posts parsed Gmail credit alerts here.
- *    Auth: header "x-greenew-secret" must match BANK_ALERT_INGEST_SECRET.
+ *    Auth: header "x-serlzo-secret" must match BANK_ALERT_INGEST_SECRET.
  *
  * 2. POST (no ?action) — Telegram webhook for the PUBLIC deposit bot.
  *    Flow:
@@ -164,7 +164,7 @@ module.exports = async function handler(req, res) {
 
   // ══ INGEST — new bank credit alert from Google Apps Script ═══════════════════
   if (req.method === "POST" && action === "ingest") {
-    const secret = req.headers["x-greenew-secret"];
+    const secret = req.headers["x-serlzo-secret"];
     if (!secret || secret !== process.env.BANK_ALERT_INGEST_SECRET) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -217,7 +217,7 @@ module.exports = async function handler(req, res) {
     if (text === "/start") {
       await clearSession(chatId);
       await sendMessage(chatId,
-        "👋 <b>Welcome to Greenew Deposit Bot!</b>\n\n" +
+        "👋 <b>Welcome to Serlzo Investments Deposit Bot!</b>\n\n" +
         "After making your bank transfer, send me your <b>narration code</b> " +
         "(e.g. <code>GRNA1B2C3D4E5F</code>) and I'll check it for you.\n\n" +
         "⚠️ You must include the narration in your transfer description — otherwise we can't match your payment."

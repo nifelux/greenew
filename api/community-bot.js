@@ -1,7 +1,7 @@
 /**
  * /api/community-bot.js
  *
- * Telegram bot for your Greenew discussion GROUP (not DMs).
+ * Telegram bot for your Serlzo Investments discussion GROUP (not DMs).
  * Passively watches messages and auto-replies to:
  *   1. Greetings / "I'm new here"      → welcome message
  *   2. "How do I deposit?"             → deposit guide (matches live method)
@@ -22,12 +22,12 @@
  * ── FULL SETUP ──────────────────────────────────────────────────────────────
  * 1. @BotFather → /newbot → get a token
  * 2. /setprivacy → Disable (see above — do not skip this)
- * 3. Add the bot to your Greenew discussion group as a member
+ * 3. Add the bot to your Serlzo Investments discussion group as a member
  * 4. (Optional) Get the group's chat ID — forward any group message to
  *    @userinfobot — so the bot only ever replies in THIS group
  * 5. Set Vercel env vars (below)
  * 6. Register the webhook:
- *    https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://greenew-five.vercel.app/api/community-bot
+ *    https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://serlzo-five.vercel.app/api/community-bot
  *
  * Env vars:
  *   TELEGRAM_COMMUNITY_BOT_TOKEN — new bot token from BotFather
@@ -70,7 +70,7 @@ async function getDepositGuideText() {
   const method = data?.value || "manual";
 
   if (method === "paystack") {
-    return "📋 <b>How to Deposit on Greenew</b>\n\n" +
+    return "📋 <b>How to Deposit on Serlzo Investments</b>\n\n" +
       "1️⃣ Open the app → tap <b>Recharge</b>\n" +
       "2️⃣ Choose an amount (min ₦500) or enter a custom one\n" +
       "3️⃣ Tap Continue — a secure Paystack checkout opens\n" +
@@ -79,7 +79,7 @@ async function getDepositGuideText() {
       "6️⃣ Head to <b>Products</b> to invest and start earning daily! 🚀";
   }
   if (method === "ipayng") {
-    return "📋 <b>How to Deposit on Greenew</b>\n\n" +
+    return "📋 <b>How to Deposit on Serlzo Investments</b>\n\n" +
       "1️⃣ Open the app → tap <b>Recharge</b>\n" +
       "2️⃣ Choose an amount (min ₦500) or enter a custom one\n" +
       "3️⃣ You'll get bank transfer details via iPayNG\n" +
@@ -87,7 +87,7 @@ async function getDepositGuideText() {
       "5️⃣ Your wallet credits automatically once confirmed\n" +
       "6️⃣ Head to <b>Products</b> to invest and start earning daily! 🚀";
   }
-  return "📋 <b>How to Deposit on Greenew</b>\n\n" +
+  return "📋 <b>How to Deposit on Serlzo Investments</b>\n\n" +
     "1️⃣ Open the app → tap <b>Recharge</b>\n" +
     "2️⃣ Choose an amount (min ₦500) or enter a custom one\n" +
     "3️⃣ You'll see a bank account + a unique <b>narration code</b>\n" +
@@ -101,7 +101,7 @@ async function getWithdrawalGuideText() {
   const { data } = await supabase.from("site_settings").select("value").eq("key", "withdrawals_locked").single();
   const locked = data?.value === "true";
 
-  const base = "📋 <b>How to Withdraw on Greenew</b>\n\n" +
+  const base = "📋 <b>How to Withdraw on Serlzo Investments</b>\n\n" +
     "1️⃣ Open the app → tap <b>Withdraw</b>\n" +
     "2️⃣ Enter an amount (min ₦1,000)\n" +
     "3️⃣ Select a saved bank account, or add a new one\n" +
@@ -115,7 +115,7 @@ async function getWithdrawalGuideText() {
 }
 
 function getReferralGuideText() {
-  return "📋 <b>How Referrals Work on Greenew</b>\n\n" +
+  return "📋 <b>How Referrals Work on Serlzo Investments</b>\n\n" +
     "Share your referral link from the <b>Team</b> page. When someone you invite deposits, you earn instantly:\n\n" +
     "🔹 Level 1 (Direct) → <b>20%</b>\n" +
     "🔹 Level 2 → <b>3%</b>\n" +
@@ -125,7 +125,7 @@ function getReferralGuideText() {
 }
 
 function getVipGuideText() {
-  return "📋 <b>VIP Levels on Greenew</b>\n\n" +
+  return "📋 <b>VIP Levels on Serlzo Investments</b>\n\n" +
     "Growing your team unlocks exclusive VIP plans with higher daily returns:\n\n" +
     "🥉 VIP 1 → 3 active referrals\n" +
     "🥈 VIP 2 → 5 active referrals\n" +
@@ -135,8 +135,8 @@ function getVipGuideText() {
 }
 
 const WELCOME_TEXT =
-  "👋 <b>Welcome to the Greenew community!</b> ⚡\n\n" +
-  "We're glad to have you here. Greenew is an investment platform where you deposit, invest in a plan, and earn daily income.\n\n" +
+  "👋 <b>Welcome to the Serlzo Investments community!</b> ⚡\n\n" +
+  "We're glad to have you here. Serlzo Investments is an investment platform where you deposit, invest in a plan, and earn daily income.\n\n" +
   "💬 Ask any questions here — the community and team are happy to help.\n" +
   "📋 Try asking <b>\"how do I deposit\"</b>, <b>\"how does referral work\"</b>, or <b>\"what is VIP\"</b> anytime.";
 

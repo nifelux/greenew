@@ -118,7 +118,7 @@ module.exports = async function handler(req, res) {
 
     if(text === "/start") {
       await sendMessage(ADMIN_CHAT,
-        `👋 <b>Greenew Admin Bot</b>\n\n` +
+        `👋 <b>Serlzo Investments Admin Bot</b>\n\n` +
         `I'll notify you instantly when:\n` +
         `• 💳 A new manual deposit is submitted\n` +
         `• 💸 A new withdrawal is requested\n\n` +
@@ -202,7 +202,7 @@ module.exports = async function handler(req, res) {
         supabase.from("user_products").select("id",{count:"exact",head:true}).eq("status","active"),
       ]);
       await sendMessage(ADMIN_CHAT,
-        `📊 <b>Greenew Stats</b>\n\n` +
+        `📊 <b>Serlzo Investments Stats</b>\n\n` +
         `👥 Total Users: ${u.count||0}\n` +
         `📦 Active Products: ${p.count||0}\n` +
         `💳 Pending Deposits: ${d.count||0}\n` +

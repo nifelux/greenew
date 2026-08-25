@@ -1,4 +1,4 @@
-/* Public browser configuration for the Greenew portal.
+/* Public browser configuration for the Serlzo Investments portal.
  * Never return SUPABASE_SERVICE_ROLE_KEY or any payment/provider secret here.
  */
 module.exports = async function (req, res) {
@@ -21,7 +21,7 @@ module.exports = async function (req, res) {
   if (!supabaseUrl || !supabaseAnon) {
     return res.status(503).json({
       ok: false,
-      error: "Greenew public Supabase configuration is missing. Set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel."
+      error: "Serlzo Investments public Supabase configuration is missing. Set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel."
     });
   }
 

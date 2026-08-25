@@ -86,7 +86,7 @@ module.exports = async function(req, res) {
     const { data:bankRows } = await supabase.from("site_settings").select("key,value").in("key",["bank_name","account_name","account_number"]);
     const bank=Object.fromEntries((bankRows||[]).map(s=>[s.key,s.value]));
     return res.json({ ok:true, reference, narration, amount:num,
-      bank_name:bank.bank_name||"Greenew Energy Services", account_number:bank.account_number||"", account_name:bank.account_name||"Greenew Energy Services Ltd." });
+      bank_name:bank.bank_name||"Serlzo Investments Energy Services", account_number:bank.account_number||"", account_name:bank.account_name||"Serlzo Investments Energy Services Ltd." });
   }
 
   // POST: initiate-paystack
