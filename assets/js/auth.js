@@ -1,9 +1,9 @@
-/* Greenew customer session and formatting helpers. */
+/* Serlzo Investments customer session and formatting helpers. */
 (function () {
   "use strict";
-  window.GreenewAuth = {
+  window.SerlzoAuth = {
     requireAuth: async function () {
-      if (window.GreenewReady) await window.GreenewReady;
+      if (window.SerlzoReady) await window.SerlzoReady;
       if (!window.sb) { location.href = "/index.html"; return null; }
       try {
         var { data: { session } } = await window.sb.auth.getSession();
@@ -21,7 +21,7 @@
       } catch (e) { location.href = "/dashboard.html"; return null; }
     },
     loadProfile: async function (userId) {
-      if (window.GreenewReady) await window.GreenewReady;
+      if (window.SerlzoReady) await window.SerlzoReady;
       if (!window.sb) return null;
       try {
         var { data: profile } = await window.sb.from("profiles").select("*").eq("id", userId).single();
@@ -36,7 +36,7 @@
           el.textContent = profile.vip_level > 0 ? "Tier " + profile.vip_level : "Customer";
         });
         return profile;
-      } catch (e) { console.warn("Greenew profile load error", e); return null; }
+      } catch (e) { console.warn("Serlzo Investments profile load error", e); return null; }
     },
     logout: async function () {
       if (window.sb) { try { await window.sb.auth.signOut(); } catch (e) {} }

@@ -84,5 +84,5 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render);
   else render();
-  window.GreenewIcons = { render: render, icons: icons };
+  window.SerlzoIcons = { render: render, icons: icons };
 })();

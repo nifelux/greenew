@@ -1,4 +1,4 @@
-/* Greenew Supabase bootstrap. Public browser config may come from page data attributes or /api/config. */
+/* Serlzo Investments Supabase bootstrap. Public browser config may come from page data attributes or /api/config. */
 (function () {
   "use strict";
 
@@ -18,11 +18,11 @@
   }
 
   function setConfigError(message) {
-    window.GreenewConfig = { ok: false, error: message };
-    window.GreenewUI?.hideLoader();
+    window.SerlzoConfig = { ok: false, error: message };
+    window.SerlzoUI?.hideLoader();
   }
 
-  window.GreenewReady = (async function () {
+  window.SerlzoReady = (async function () {
     var config = inlineConfig();
 
     if (!config) {
@@ -32,17 +32,17 @@
         if (response.ok && payload?.supabaseUrl && payload?.supabaseAnon) {
           config = { supabaseUrl: payload.supabaseUrl, supabaseAnon: payload.supabaseAnon };
         } else {
-          setConfigError(payload?.error || "Greenew public Supabase configuration is missing.");
+          setConfigError(payload?.error || "Serlzo Investments public Supabase configuration is missing.");
           return null;
         }
       } catch (error) {
-        setConfigError("Greenew could not reach its public configuration endpoint. Check the deployment and try again.");
+        setConfigError("Serlzo Investments could not reach its public configuration endpoint. Check the deployment and try again.");
         return null;
       }
     }
 
     if (typeof window.supabase === "undefined") {
-      setConfigError("The Greenew Supabase client library did not load. Check the CDN policy or network connection.");
+      setConfigError("The Serlzo Investments Supabase client library did not load. Check the CDN policy or network connection.");
       return null;
     }
 
@@ -50,11 +50,11 @@
       window.sb = window.supabase.createClient(config.supabaseUrl, config.supabaseAnon, {
         auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
       });
-      window.GreenewConfig = { ok: true, supabaseUrl: config.supabaseUrl };
-      window.GreenewUI?.hideLoader();
+      window.SerlzoConfig = { ok: true, supabaseUrl: config.supabaseUrl };
+      window.SerlzoUI?.hideLoader();
       return window.sb;
     } catch (error) {
-      setConfigError("Greenew received an invalid Supabase public configuration.");
+      setConfigError("Serlzo Investments received an invalid Supabase public configuration.");
       return null;
     }
   })();
