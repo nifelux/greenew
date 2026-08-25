@@ -1,7 +1,7 @@
 {
-  "name": "greenew-power-portal",
+  "name": "serlzo-investments-portal",
   "version": "1.0.0",
-  "description": "Greenew power services customer and operations portal",
+  "description": "Serlzo Investments power services customer and operations portal",
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0"
   }

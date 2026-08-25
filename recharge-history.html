@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Make a payment Activity</title>
+  <title>Serlzo Investments — Make a payment Activity</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -10,8 +10,8 @@
     .htab { flex:1; padding:9px; border-radius:var(--radius-sm); font-size:13px; font-weight:700; text-align:center; border:2px solid var(--border); background:var(--card); color:var(--muted); cursor:pointer; transition:all .15s; }
     .htab.on { background:var(--purple); border-color:var(--purple); color:#fff; }
     .dep-status { padding:3px 9px; border-radius:20px; font-size:10px; font-weight:700; }
-    .s-pending   { background:#FEF3C7; color:#92400E; }
-    .s-completed { background:#DDF6EA; color:#0D6548; }
+    .s-pending   { background:#f7edcf; color:#92400E; }
+    .s-completed { background:#f7f1e3; color:#0D6548; }
     .s-rejected  { background:#FEE2E2; color:#991B1B; }
   </style>
   <link rel="stylesheet" href="assets/css/premium-pages.css"/>
@@ -35,16 +35,16 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="", allDeps=[], activeFilter="all";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
     var {data}=await window.sb.from("deposits").select("*").eq("user_id",uid).order("created_at",{ascending:false});
     allDeps=data||[]; render();
@@ -67,7 +67,7 @@
           '<div class="li-sub">'+new Date(d.created_at).toLocaleString()+'</div>'+
           (d.narration?'<div class="li-sub" style="font-family:monospace;color:var(--purple)">'+d.narration+'</div>':'')+
         '</div>'+
-        '<div class="li-right"><div class="li-amount credit">+'+window.GreenewAuth.money(d.amount)+'</div></div>'+
+        '<div class="li-right"><div class="li-amount credit">+'+window.SerlzoAuth.money(d.amount)+'</div></div>'+
       '</div>';
     }).join("");
   }

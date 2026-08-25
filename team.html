@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — My Household</title>
+  <title>Serlzo Investments — My Household</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -69,7 +69,7 @@
     .member-status {
       padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700;
     }
-    .status-active { background: #DDF6EA; color: #0D6548; }
+    .status-active { background: #f7f1e3; color: #0D6548; }
     .status-inactive { background: var(--bg); color: var(--muted); }
 
     .payments-card {
@@ -205,7 +205,7 @@
 <div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
@@ -214,10 +214,10 @@
   var userId="", refCode="", activeLevel=1;
   var l1Customers=[], l2Customers=[], l3Customers=[];
 
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
 
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     userId=s.user.id;
 
     // Own profile (RLS allows this — user reading their own row)
@@ -313,15 +313,15 @@
   }
 
   window.copyCode=function(){
-    navigator.clipboard.writeText(refCode).then(function(){window.GreenewAuth.toast("Referral code copied!");});
+    navigator.clipboard.writeText(refCode).then(function(){window.SerlzoAuth.toast("Referral code copied!");});
   };
 
   window.shareLink=function(){
     var link=location.origin+"/register.html?ref="+refCode;
     if(navigator.share){
-      navigator.share({title:"Join Greenew",text:"Join me on Greenew and earn daily! Use my code: "+refCode,url:link});
+      navigator.share({title:"Join Serlzo Investments",text:"Join me on Serlzo Investments and earn daily! Use my code: "+refCode,url:link});
     } else {
-      navigator.clipboard.writeText(link).then(function(){window.GreenewAuth.toast("Referral link copied!");});
+      navigator.clipboard.writeText(link).then(function(){window.SerlzoAuth.toast("Referral link copied!");});
     }
   };
 })();

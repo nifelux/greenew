@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Support messages</title>
+  <title>Serlzo Investments — Support messages</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -50,16 +50,16 @@
 
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="", msgs=[];
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id; await load();
   });
 
@@ -76,7 +76,7 @@
           (m.is_read?'':'<div class="unread-dot"></div>')+
         '</div>'+
         '<div class="msg-preview">'+m.content+'</div>'+
-        '<div class="msg-time">'+window.GreenewAuth.timeAgo(m.created_at)+'</div>'+
+        '<div class="msg-time">'+window.SerlzoAuth.timeAgo(m.created_at)+'</div>'+
       '</div>';
     }).join("");
   }
@@ -97,7 +97,7 @@
 
   window.markAll=async function(){
     await fetch("/api/messages?action=mark-read",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid})});
-    window.GreenewAuth.toast("All messages marked as read");
+    window.SerlzoAuth.toast("All messages marked as read");
     await load();
   };
 })();

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Payment methods</title>
+  <title>Serlzo Investments — Payment methods</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -42,16 +42,16 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id; await loadCards();
   });
 
@@ -89,7 +89,7 @@
     var r=await fetch("/api/user?action=add-bank-card",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid,bank_name:bank,account_number:num,account_name:name,is_default:def})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("Account saved!");
+      window.SerlzoAuth.toast("Account saved!");
       document.getElementById("bankName").value=""; document.getElementById("acctNum").value=""; document.getElementById("acctName").value=""; document.getElementById("isDefault").checked=false;
       await loadCards();
     } else { al.textContent=d.error||"Error"; al.className="alert alert-error show"; }
@@ -98,7 +98,7 @@
   window.deleteCard=async function(id){
     if(!confirm("Remove this account?")) return;
     await fetch("/api/user?action=delete-bank-card",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid,card_id:id})});
-    window.GreenewAuth.toast("Account removed"); await loadCards();
+    window.SerlzoAuth.toast("Account removed"); await loadCards();
   };
 })();
 </script>

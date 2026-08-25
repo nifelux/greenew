@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Service alerts</title>
+  <title>Serlzo Investments — Service alerts</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -28,16 +28,16 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id; await load();
   });
 
@@ -51,7 +51,7 @@
         '<div>'+
           '<div class="notif-title">'+n.title+'</div>'+
           '<div class="notif-msg">'+n.message+'</div>'+
-          '<div class="notif-time">'+window.GreenewAuth.timeAgo(n.created_at)+'</div>'+
+          '<div class="notif-time">'+window.SerlzoAuth.timeAgo(n.created_at)+'</div>'+
         '</div>'+
       '</div>';
     }).join("");
@@ -61,7 +61,7 @@
 
   window.markAll=async function(){
     await window.sb.from("notifications").delete().eq("user_id",uid);
-    window.GreenewAuth.toast("Service alerts cleared");
+    window.SerlzoAuth.toast("Service alerts cleared");
     document.getElementById("notifList").innerHTML='<div class="empty"><div class="empty-icon"></div><p>No notifications yet.</p></div>';
   };
 })();

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Profile</title>
+  <title>Serlzo Investments — Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -168,7 +168,7 @@
       </a>
       <a class="menu-item" href="about.html">
         <div class="menu-icon green"></div>
-        <div class="flex-1"><div class="menu-label">About Greenew</div><div class="menu-sub">Learn about our platform</div></div>
+        <div class="flex-1"><div class="menu-label">About Serlzo Investments</div><div class="menu-sub">Learn about our platform</div></div>
         <div class="menu-arrow">›</div>
       </a>
     </div>
@@ -187,17 +187,17 @@
 <div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     var uid=s.user.id;
-    await window.GreenewAuth.loadProfile(uid);
+    await window.SerlzoAuth.loadProfile(uid);
 
     var {data:w}=await window.sb.from("wallets").select("balance").eq("user_id",uid).single();
     document.getElementById("statBal").textContent="₦"+Number(w?.balance||0).toLocaleString();
@@ -217,7 +217,7 @@
     document.getElementById("notifSub").textContent=nc>0?(nc+" unread"):"No new notifications";
 
     document.getElementById("logoutBtn").addEventListener("click",function(){
-      if(confirm("Sign out of Greenew?")) window.GreenewAuth.logout();
+      if(confirm("Sign out of Serlzo Investments?")) window.SerlzoAuth.logout();
     });
   });
 })();

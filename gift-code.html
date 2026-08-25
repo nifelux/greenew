@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Offer code</title>
+  <title>Serlzo Investments — Offer code</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -35,23 +35,23 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
     var {data:r}=await window.sb.from("gift_code_redemptions").select("*,gift_codes(code)").eq("user_id",uid).order("created_at",{ascending:false});
     var el=document.getElementById("redemptions");
     if(!r||!r.length){ el.innerHTML='<div class="empty"><p>No gift codes redeemed yet.</p></div>'; return; }
     el.innerHTML=r.map(function(x){
-      return '<div class="list-item"><div class="li-left"><div class="li-title">'+x.gift_codes?.code+'</div><div class="li-sub">'+window.GreenewAuth.timeAgo(x.created_at)+'</div></div>'+
-        '<div class="li-right"><div class="li-amount credit">+'+window.GreenewAuth.money(x.amount)+'</div></div></div>';
+      return '<div class="list-item"><div class="li-left"><div class="li-title">'+x.gift_codes?.code+'</div><div class="li-sub">'+window.SerlzoAuth.timeAgo(x.created_at)+'</div></div>'+
+        '<div class="li-right"><div class="li-amount credit">+'+window.SerlzoAuth.money(x.amount)+'</div></div></div>';
     }).join("");
   });
 
@@ -63,7 +63,7 @@
     var r=await fetch("/api/bonus?action=redeem-gift",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid,code})});
     var d=await r.json();
     if(d.ok){
-      al.textContent="Redeemed! "+window.GreenewAuth.money(d.amount)+" added to your Greenew account.";
+      al.textContent="Redeemed! "+window.SerlzoAuth.money(d.amount)+" added to your Serlzo Investments account.";
       al.className="alert alert-success show";
       document.getElementById("codeInput").value="";
     } else {

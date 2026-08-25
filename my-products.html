@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — My active plans</title>
+  <title>Serlzo Investments — My active plans</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -28,7 +28,7 @@
     .prog-bar { height:6px; background:var(--bg); border-radius:6px; overflow:hidden; }
     .prog-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--sky)); border-radius:6px; transition:width .4s; }
     .prog-label { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px; }
-    .status-done { background:#DDF6EA; color:#0D6548; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .status-done { background:#f7f1e3; color:#0D6548; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; }
   </style>
   <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
@@ -60,7 +60,7 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
@@ -68,9 +68,9 @@
 (function(){
   var uid="";
   var accessToken="";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
     accessToken=s.access_token||"";
     await load();
@@ -107,7 +107,7 @@
     var collectible=active.filter(canClaim);
     var totalToday=collectible.reduce(function(s,p){return s+Number(p.daily_income||0);},0);
 
-    document.getElementById("todayIncome").textContent=window.GreenewAuth.money(totalToday);
+    document.getElementById("todayIncome").textContent=window.SerlzoAuth.money(totalToday);
     document.getElementById("collectSub").textContent=collectible.length+" product"+(collectible.length!==1?"s":"")+" ready to collect";
     document.getElementById("collectBtn").disabled=collectible.length===0;
     if(collectible.length===0) document.getElementById("collectBtn").textContent="Already Collected Today";
@@ -132,9 +132,9 @@
           '</div>'+
           '<div class="up-body">'+
             '<div class="up-stats">'+
-              '<div><div class="us-val">'+window.GreenewAuth.money(p.daily_income)+'</div><div class="us-lbl">Daily</div></div>'+
+              '<div><div class="us-val">'+window.SerlzoAuth.money(p.daily_income)+'</div><div class="us-lbl">Daily</div></div>'+
               '<div><div class="us-val">'+p.days_collected+'/'+p.duration_days+'</div><div class="us-lbl">Days</div></div>'+
-              '<div><div class="us-val">'+window.GreenewAuth.money(p.total_earned)+'</div><div class="us-lbl">Earned</div></div>'+
+              '<div><div class="us-val">'+window.SerlzoAuth.money(p.total_earned)+'</div><div class="us-lbl">Earned</div></div>'+
             '</div>'+
             '<div class="prog-wrap">'+
               '<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
@@ -156,8 +156,8 @@
           '<div class="up-body">'+
             '<div class="up-stats">'+
               '<div><div class="us-val">'+p.duration_days+'d</div><div class="us-lbl">Duration</div></div>'+
-              '<div><div class="us-val">'+window.GreenewAuth.money(p.total_earned)+'</div><div class="us-lbl">Total Earned</div></div>'+
-              '<div><div class="us-val">'+window.GreenewAuth.money(p.amount||p.amount_paid)+'</div><div class="us-lbl">Powered</div></div>'+
+              '<div><div class="us-val">'+window.SerlzoAuth.money(p.total_earned)+'</div><div class="us-lbl">Total Earned</div></div>'+
+              '<div><div class="us-val">'+window.SerlzoAuth.money(p.amount||p.amount_paid)+'</div><div class="us-lbl">Powered</div></div>'+
             '</div>'+
           '</div>'+
         '</div>';
@@ -177,10 +177,10 @@
     var r=await fetch("/api/user?action=collect-income",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+accessToken},body:JSON.stringify({user_id:uid})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("Collected "+window.GreenewAuth.money(d.amount)+"!");
+      window.SerlzoAuth.toast("Collected "+window.SerlzoAuth.money(d.amount)+"!");
       await load();
     } else {
-      window.GreenewAuth.toast(d.error||"Nothing to collect");
+      window.SerlzoAuth.toast(d.error||"Nothing to collect");
       btn.disabled=false; btn.textContent="Collect All";
     }
   };

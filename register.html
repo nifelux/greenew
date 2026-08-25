@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Register</title>
+  <title>Serlzo Investments — Register</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -13,7 +13,7 @@
 
     /* Hero — inline gradient so it works even if styles.css has issues */
     .hero{
-      background:linear-gradient(135deg,#0F3D2E 0%,#149A68 100%);
+      background:linear-gradient(135deg,#0F3D2E 0%,#b8891f 100%);
       padding:44px 32px 36px;text-align:center;color:#fff;
       position:relative;overflow:hidden;
     }
@@ -27,7 +27,7 @@
 
     /* ref box — hidden by default via inline style */
     .ref-box{
-      background:#ECFAF2;border-radius:10px;padding:10px 14px;
+      background:#f7f1e3;border-radius:10px;padding:10px 14px;
       margin-bottom:16px;font-size:13px;color:#0F3D2E;font-weight:600;
     }
 
@@ -37,10 +37,10 @@
       margin-bottom:14px;
     }
     .alert-error  {background:#FEE2E2;color:#991B1B}
-    .alert-success{background:#DDF6EA;color:#0D6548}
+    .alert-success{background:#f7f1e3;color:#0D6548}
 
     .field{margin-bottom:14px}
-    .field label{display:block;font-size:13px;font-weight:600;color:#355247;margin-bottom:5px}
+    .field label{display:block;font-size:13px;font-weight:600;color:#34343a;margin-bottom:5px}
     .field input{
       width:100%;padding:13px 16px;border:2px solid #DDE9E1;border-radius:10px;
       font-size:15px;color:#163027;background:#fff;outline:none;font-family:inherit;
@@ -50,7 +50,7 @@
     .btn{
       width:100%;padding:15px;border:none;border-radius:50px;cursor:pointer;
       font-size:15px;font-weight:700;font-family:inherit;
-      background:linear-gradient(135deg,#0F3D2E,#149A68);color:#fff;
+      background:linear-gradient(135deg,#0F3D2E,#b8891f);color:#fff;
       transition:opacity .15s;margin-top:4px;
     }
     .btn:disabled{opacity:.4;cursor:not-allowed}
@@ -64,13 +64,13 @@
 
 <div class="wrap">
   <div class="hero">
-    <div class="logo">Greenew</div>
+    <div class="logo">Serlzo Investments</div>
     <div class="logo-sub">Start your energy service journey</div>
   </div>
 
   <div class="body">
     <div class="title">Create Account</div>
-    <div class="sub">Join thousands earning daily on Greenew</div>
+    <div class="sub">Join thousands earning daily on Serlzo Investments</div>
 
     <!-- Ref box — hidden by default -->
     <div id="refBox" class="ref-box" style="display:none">
@@ -110,7 +110,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js"></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
@@ -171,9 +171,9 @@
     }
 
     /* wait for page config or /api/config before using Supabase */
-    if(window.GreenewReady) await window.GreenewReady;
+    if(window.SerlzoReady) await window.SerlzoReady;
     if(!window.sb){
-      showAlert(window.GreenewConfig?.error || "Greenew access is not configured yet. Ask the site administrator to set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.", "error"); return;
+      showAlert(window.SerlzoConfig?.error || "Serlzo Investments access is not configured yet. Ask the site administrator to set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.", "error"); return;
     }
 
     btn.disabled = true; btn.textContent = "Creating account…";

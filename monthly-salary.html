@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Monthly Service credits</title>
+  <title>Serlzo Investments — Monthly Service credits</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -42,7 +42,7 @@
         <div><div style="font-size:14px;font-weight:600">Available from the 5th</div><div style="font-size:12px;color:var(--muted)">Service credits is available from the 5th of each month</div></div>
       </div>
       <div class="info-row" style="border-bottom:none">
-        <div class="info-icon" style="background:#DDF6EA"></div>
+        <div class="info-icon" style="background:#f7f1e3"></div>
         <div><div style="font-size:14px;font-weight:600">3 Levels Deep</div><div style="font-size:12px;color:var(--muted)">Counts payments from your L1, L2, and L3 team</div></div>
       </div>
     </div>
@@ -55,16 +55,16 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   var uid="";
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
 
     var r=await fetch("/api/bonus?action=salary-status&user_id="+uid);
@@ -73,7 +73,7 @@
     var status=document.getElementById("salaryStatus");
     var day=new Date().getDate();
 
-    document.getElementById("salaryAmt").textContent=window.GreenewAuth.money(d.amount||0);
+    document.getElementById("salaryAmt").textContent=window.SerlzoAuth.money(d.amount||0);
 
     if(d.claimed){
       btn.textContent="Claimed for "+d.month; btn.disabled=true;
@@ -85,7 +85,7 @@
       btn.textContent="No earnings yet"; btn.disabled=true;
       status.textContent="Your team has no qualifying payments this month";
     } else {
-      btn.disabled=false; btn.textContent="Claim "+window.GreenewAuth.money(d.amount);
+      btn.disabled=false; btn.textContent="Claim "+window.SerlzoAuth.money(d.amount);
       status.textContent="Ready to claim!";
     }
 
@@ -97,7 +97,7 @@
       hl.innerHTML=hist.map(function(c){
         return '<div class="list-item">'+
           '<div class="li-left"><div class="li-title">'+c.month+'</div><div class="li-sub">'+new Date(c.created_at).toDateString()+'</div></div>'+
-          '<div class="li-right"><div class="li-amount credit">+'+window.GreenewAuth.money(c.amount)+'</div></div>'+
+          '<div class="li-right"><div class="li-amount credit">+'+window.SerlzoAuth.money(c.amount)+'</div></div>'+
         '</div>';
       }).join("");
     }
@@ -109,10 +109,10 @@
     var r=await fetch("/api/bonus?action=monthly-salary",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:uid})});
     var d=await r.json();
     if(d.ok){
-      window.GreenewAuth.toast("Service credits of "+window.GreenewAuth.money(d.amount)+" credited!");
+      window.SerlzoAuth.toast("Service credits of "+window.SerlzoAuth.money(d.amount)+" credited!");
       btn.textContent="Claimed!";
     } else {
-      window.GreenewAuth.toast(d.error||"Cannot claim now");
+      window.SerlzoAuth.toast(d.error||"Cannot claim now");
       btn.disabled=false; btn.textContent="Claim Service credits";
     }
   };

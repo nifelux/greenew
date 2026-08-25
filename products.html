@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Plans</title>
+  <title>Serlzo Investments — Plans</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -97,7 +97,7 @@
 <div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
@@ -106,15 +106,15 @@
   "use strict";
   var userId="", userVip=0, walletBal=0, userPlans=[], activeTab="newbie", pendingPlanId="";
 
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
 
   waitSb(async function(){
-    var s = await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s = await window.SerlzoAuth.requireAuth(); if(!s)return;
     userId=s.user.id;
 
     var {data:p} = await window.sb.from("profiles").select("vip_level").eq("id",userId).single();
     userVip = p?.vip_level||0;
-    await window.GreenewAuth.loadProfile(userId);
+    await window.SerlzoAuth.loadProfile(userId);
 
     var {data:w} = await window.sb.from("wallets").select("balance").eq("user_id",userId).single();
     walletBal = w?.balance||0;
@@ -169,12 +169,12 @@
         '<div class="product-header" style="'+hdr+'">'+
           '<div class="product-type-badge">'+(type==="vip"?"Service tier "+vipLevel:"Newbie")+'</div>'+
           '<div style="color:#fff;font-size:11px;opacity:.8;text-transform:uppercase;letter-spacing:.06em">'+p.name+'</div>'+
-          '<div style="color:#fff;font-size:28px;font-weight:800;margin-top:4px">'+window.GreenewAuth.money(p.price)+'</div>'+
+          '<div style="color:#fff;font-size:28px;font-weight:800;margin-top:4px">'+window.SerlzoAuth.money(p.price)+'</div>'+
         '</div>'+
         '<div class="product-stats">'+
-          '<div class="pstat"><div class="pstat-val">'+window.GreenewAuth.money(p.daily_income)+'</div><div class="pstat-lbl">Daily</div></div>'+
+          '<div class="pstat"><div class="pstat-val">'+window.SerlzoAuth.money(p.daily_income)+'</div><div class="pstat-lbl">Daily</div></div>'+
           '<div class="pstat"><div class="pstat-val">'+p.duration_days+'d</div><div class="pstat-lbl">Duration</div></div>'+
-          '<div class="pstat"><div class="pstat-val">'+window.GreenewAuth.money(p.total_return)+'</div><div class="pstat-lbl">Total</div></div>'+
+          '<div class="pstat"><div class="pstat-val">'+window.SerlzoAuth.money(p.total_return)+'</div><div class="pstat-lbl">Total</div></div>'+
         '</div>'+
         '<div class="product-footer">'+
           (bought
@@ -193,8 +193,8 @@
     document.getElementById("modalTitle").textContent = "Buy " + name;
     document.getElementById("modalSub").textContent = "This product can only be purchased once.";
     document.getElementById("modalDetails").innerHTML =
-      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--muted)">Price</span><strong>'+window.GreenewAuth.money(price)+'</strong></div>'+
-      '<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Available account balance</span><strong style="color:'+(walletBal>=price?'var(--success)':'var(--danger)')+'">'+window.GreenewAuth.money(walletBal)+'</strong></div>'+
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--muted)">Price</span><strong>'+window.SerlzoAuth.money(price)+'</strong></div>'+
+      '<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Available account balance</span><strong style="color:'+(walletBal>=price?'var(--success)':'var(--danger)')+'">'+window.SerlzoAuth.money(walletBal)+'</strong></div>'+
       (walletBal < price ? '<div style="margin-top:10px;font-size:12px;color:var(--danger)">Insufficient account balance. Please add funds first.</div>' : '');
     document.getElementById("modalAlert").className="alert";
     var modal=document.getElementById("modal");
@@ -221,7 +221,7 @@
       btn.disabled=false; btn.textContent="Confirm"; return;
     }
 
-    window.GreenewAuth.toast("Plan purchased successfully!");
+    window.SerlzoAuth.toast("Plan purchased successfully!");
     closeModal();
     // Refresh
     var {data:w}=await window.sb.from("wallets").select("balance").eq("user_id",userId).single();

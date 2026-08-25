@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Home</title>
+  <title>Serlzo Investments — Home</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -59,14 +59,14 @@
 
     /* Income strip */
     .income-strip {
-      background:linear-gradient(135deg,#DDF6EA,#C8F0D9);
+      background:linear-gradient(135deg,#f7f1e3,#f0e4c3);
       border-radius:var(--radius); margin:0 16px 16px; padding:14px 16px;
       display:flex; align-items:center; justify-content:space-between;
     }
     .income-left .lbl { font-size:11px; font-weight:600; color:#0D6548; opacity:.7; text-transform:uppercase; }
     .income-left .val { font-size:22px; font-weight:800; color:#0D6548; }
     .income-claim-btn {
-      padding:9px 18px; border-radius:30px; background:#149A68; color:#fff;
+      padding:9px 18px; border-radius:30px; background:#b8891f; color:#fff;
       font-size:13px; font-weight:700; border:none; cursor:pointer;
     }
 
@@ -105,12 +105,12 @@
     </div>
   </div>
 
-  <!-- Repository-hosted Greenew visual -->
-  <div class="dashboard-image-card anim anim-1" aria-label="Greenew brand visual">
-    <img id="dashboardBrandImage" class="dashboard-brand-image" src="assets/images/IMG_20260821_182839_324.jpg" alt="Greenew" onerror="this.onerror=null;this.style.display='none';document.getElementById('dashboardImageFallback').style.display='grid';"/>
+  <!-- Repository-hosted Serlzo Investments visual -->
+  <div class="dashboard-image-card anim anim-1" aria-label="Serlzo Investments brand visual">
+    <img id="dashboardBrandImage" class="dashboard-brand-image" src="assets/images/IMG_20260821_182839_324.jpg" alt="Serlzo Investments" onerror="this.onerror=null;this.style.display='none';document.getElementById('dashboardImageFallback').style.display='grid';"/>
     <div id="dashboardImageFallback" class="dashboard-image-fallback" style="display:none">
       <span class="fallback-mark" data-icon="mark" aria-hidden="true"></span>
-      <strong>Greenew</strong>
+      <strong>Serlzo Investments</strong>
       <span>Grow today. Earn tomorrow.</span>
     </div>
   </div>
@@ -212,17 +212,17 @@
       <div class="welcome-orb" aria-hidden="true"></div>
       <button class="welcome-close" onclick="closeWelcome()" aria-label="Close announcement" style="position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer">Close</button>
       <div class="welcome-mark" aria-hidden="true"></div>
-      <div id="welcomeTitle" class="welcome-title" style="position:relative;z-index:1;font-weight:800">Welcome to Greenew<span id="welcomeUserName"></span></div>
+      <div id="welcomeTitle" class="welcome-title" style="position:relative;z-index:1;font-weight:800">Welcome to Serlzo Investments<span id="welcomeUserName"></span></div>
       <div class="welcome-subtitle" style="position:relative;z-index:1;font-size:13px">Your account is ready for a clearer way to manage growth.</div>
     </div>
     <div class="welcome-body">
-      <p class="welcome-copy">Greenew account rules and benefits</p>
+      <p class="welcome-copy">Serlzo Investments account rules and benefits</p>
       <div class="welcome-rules" role="list">
         <div class="welcome-rule" role="listitem"><b>1</b><span>Minimum deposit: <strong>₦3,000</strong>.</span></div>
         <div class="welcome-rule" role="listitem"><b>2</b><span>Minimum withdrawal: <strong>₦1,000</strong>.</span></div>
         <div class="welcome-rule" role="listitem"><b>3</b><span>Daily check-in bonus: <strong>₦100</strong>.</span></div>
         <div class="welcome-rule" role="listitem"><b>4</b><span>Income from a purchased plan becomes claimable from the <strong>next day</strong>.</span></div>
-        <div class="welcome-rule" role="listitem"><b>5</b><span>Referral rewards are credited according to the active Greenew settings.</span></div>
+        <div class="welcome-rule" role="listitem"><b>5</b><span>Referral rewards are credited according to the active Serlzo Investments settings.</span></div>
         <div class="welcome-rule" role="listitem"><b>6</b><span>Withdrawals are reviewed during the published service window.</span></div>
       </div>
       <div class="welcome-links">
@@ -252,27 +252,27 @@
 <div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
   <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
 <script>
 (function(){
   "use strict";
-  function waitSb(cb){ if(window.sb&&window.GreenewAuth){cb();return;} var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50); }
+  function waitSb(cb){ if(window.sb&&window.SerlzoAuth){cb();return;} var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50); }
 
   waitSb(async function(){
-    var s = await window.GreenewAuth.requireAuth();
+    var s = await window.SerlzoAuth.requireAuth();
     if(!s) return;
     var uid = s.user.id;
 
-    await window.GreenewAuth.loadProfile(uid);
+    await window.SerlzoAuth.loadProfile(uid);
     maybeShowWelcome(uid);
 
     // Wallet
     var {data:w} = await window.sb.from("wallets").select("*").eq("user_id",uid).single();
     if(w){
-      document.getElementById("walletBalance").textContent = window.GreenewAuth.money(w.balance);
+      document.getElementById("walletBalance").textContent = window.SerlzoAuth.money(w.balance);
       document.getElementById("statPayment").textContent = "₦"+Number(w.total_deposit||0).toLocaleString();
       document.getElementById("statServiceCredit").textContent  = "₦"+Number(w.total_profit||0).toLocaleString();
       document.getElementById("statRef").textContent     = "₦"+Number(w.total_referral_bonus||0).toLocaleString();
@@ -289,7 +289,7 @@
     } else {
       var totalDaily = prods.reduce(function(s,p){return s+Number(p.daily_income||0);},0);
       document.getElementById("incomeStrip").style.display="flex";
-      document.getElementById("dailyIncome").textContent = window.GreenewAuth.money(totalDaily);
+      document.getElementById("dailyIncome").textContent = window.SerlzoAuth.money(totalDaily);
 
       ap.innerHTML = prods.map(function(p){
         var pct = p.duration_days ? Math.min(100,Math.round((p.days_collected/p.duration_days)*100)) : 0;
@@ -299,7 +299,7 @@
             '<div class="mp-prog">'+p.days_collected+'/'+p.duration_days+' days</div>'+
             '<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
           '</div>'+
-          '<div class="mp-right"><div class="mp-earn">+'+window.GreenewAuth.money(p.daily_income)+'/day</div></div>'+
+          '<div class="mp-right"><div class="mp-earn">+'+window.SerlzoAuth.money(p.daily_income)+'/day</div></div>'+
         '</div>';
       }).join("");
     }
@@ -315,8 +315,8 @@
       txWrap.innerHTML = txs.map(function(t){
         var isCredit = t.amount>0;
         return '<div class="list-item">'+
-          '<div class="li-left"><div class="li-title">'+t.description+'</div><div class="li-sub">'+window.GreenewAuth.timeAgo(t.created_at)+'</div></div>'+
-          '<div class="li-right"><div class="li-amount '+(isCredit?'credit':'debit')+'">'+(isCredit?'+':'')+window.GreenewAuth.money(Math.abs(t.amount))+'</div></div>'+
+          '<div class="li-left"><div class="li-title">'+t.description+'</div><div class="li-sub">'+window.SerlzoAuth.timeAgo(t.created_at)+'</div></div>'+
+          '<div class="li-right"><div class="li-amount '+(isCredit?'credit':'debit')+'">'+(isCredit?'+':'')+window.SerlzoAuth.money(Math.abs(t.amount))+'</div></div>'+
         '</div>';
       }).join("");
     }
@@ -327,7 +327,7 @@
     if(count>0){ var b=document.getElementById("notifBadge"); b.style.display="flex"; b.textContent=count>9?"9+":count; }
   });
 
-  /* ── Greenew announcement — opens on every dashboard visit ── */
+  /* ── Serlzo Investments announcement — opens on every dashboard visit ── */
   function maybeShowWelcome(uid){
     if(!uid) return;
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Daily Check-In</title>
+  <title>Serlzo Investments — Daily Check-In</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -55,7 +55,7 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
@@ -70,9 +70,9 @@
     var btn=document.getElementById("checkinBtn");
     if(!btn.disabled) btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";
   }
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
 
     var r=await fetch("/api/bonus?action=checkin-status&user_id="+uid);
@@ -82,7 +82,7 @@
     if(d.claimed){
       btn.textContent="Already Claimed Today"; btn.disabled=true;
       document.getElementById("checkinIcon").textContent="";
-      if(window.GreenewIcons) window.GreenewIcons.render();
+      if(window.SerlzoIcons) window.SerlzoIcons.render();
     }
 
     // Last 7 days streak
@@ -121,12 +121,12 @@
     var d=await r.json();
     if(d.ok){
       var creditedAmount=Number(d.amount)||DAILY_BONUS;
-      window.GreenewAuth.toast("Claimed "+formatNaira(creditedAmount)+" daily bonus!");
+      window.SerlzoAuth.toast("Claimed "+formatNaira(creditedAmount)+" daily bonus!");
       btn.textContent="Claimed!";
       document.getElementById("checkinIcon").textContent="";
-      if(window.GreenewIcons) window.GreenewIcons.render();
+      if(window.SerlzoIcons) window.SerlzoIcons.render();
     } else {
-      window.GreenewAuth.toast(d.error==="already_claimed"?"Already claimed today!":d.error||"Error");
+      window.SerlzoAuth.toast(d.error==="already_claimed"?"Already claimed today!":d.error||"Error");
       btn.disabled=false; btn.textContent="Claim "+formatNaira(DAILY_BONUS)+" Bonus";
     }
   };

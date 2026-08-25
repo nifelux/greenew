@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Greenew — Refund</title>
+  <title>Serlzo Investments — Refund</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
   <style>
@@ -75,7 +75,7 @@
 </div>
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="assets/js/greenew.js" defer></script>
+<script src="assets/js/serlzo.js" defer></script>
 <script src="assets/js/supabase.js" defer></script>
 <script src="assets/js/auth.js" defer></script>
 <script src="assets/js/icons.js" defer></script>
@@ -83,10 +83,10 @@
 (function(){
   var uid="", balance=0, selectedCard=null, showManual=false;
   var minW=1000, maxW=0, feePercent=0, requireInvest=false, requireReferral=false; // maxW=0 means no maximum enforced
-  function waitSb(cb){if(window.sb&&window.GreenewAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.GreenewAuth){clearInterval(t);cb();}},50);}
+  function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
 
   waitSb(async function(){
-    var s=await window.GreenewAuth.requireAuth(); if(!s)return;
+    var s=await window.SerlzoAuth.requireAuth(); if(!s)return;
     uid=s.user.id;
 
     // Check global refund lock first
@@ -125,7 +125,7 @@
 
     var {data:w}=await window.sb.from("wallets").select("balance").eq("user_id",uid).single();
     balance=w?.balance||0;
-    document.getElementById("balance").textContent=window.GreenewAuth.money(balance);
+    document.getElementById("balance").textContent=window.SerlzoAuth.money(balance);
 
     // Load saved bank cards
     var r=await fetch("/api/user?action=bank-cards&user_id="+uid);
@@ -192,7 +192,7 @@
       al.className="alert alert-success show";
       btn.textContent="Submitted";
       balance-=totalDebit;
-      document.getElementById("balance").textContent=window.GreenewAuth.money(balance);
+      document.getElementById("balance").textContent=window.SerlzoAuth.money(balance);
     } else {
       al.textContent=d.error||"Error processing request";
       al.className="alert alert-error show";
