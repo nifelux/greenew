@@ -1,4 +1,4 @@
-/* Greenew route-level premium override layer. Loaded after legacy route styles. */
+/* Serlzo Investments route-level premium override layer. Loaded after legacy route styles. */
 
 body {
   background:
@@ -39,7 +39,7 @@ body {
   box-shadow: var(--shadow) !important;
 }
 .product-header { color: var(--white) !important; background: linear-gradient(135deg, var(--forest-2), var(--forest-3)) !important; }
-.product-price { color: #f9e18e !important; }
+.product-price { color: #f7db85 !important; }
 
 .auth-body {
   min-height: 100vh !important;
@@ -112,16 +112,16 @@ body {
 .dashboard-section-title { display: flex; align-items: center; justify-content: space-between; margin: 20px 18px 10px; }
 .dashboard-section-title h2 { margin: 0; font-size: 1.05rem; }
 .dashboard-section-title a { color: var(--gold-deep); font-weight: 800; }
-.reference-popup .welcome-hero { padding: 22px 20px 18px !important; background: linear-gradient(145deg, #d3a21c, #f0bc24 58%, #f6d46b) !important; }
+.reference-popup .welcome-hero { padding: 22px 20px 18px !important; background: linear-gradient(145deg, #b8891f, #d0a333 58%, #f3d47a) !important; }
 .reference-popup .welcome-dialog { max-width: 390px !important; border-radius: 28px !important; }
 .reference-popup .welcome-body { max-height: min(66vh, 520px); overflow: auto; padding: 12px 16px 17px !important; }
 .reference-popup .welcome-copy { margin: 0 0 12px !important; padding: 0 4px; text-align: left !important; }
 .reference-popup .welcome-rules { display: grid; gap: 7px; margin: 0 0 14px; }
 .reference-popup .welcome-rule { display: grid; grid-template-columns: 27px 1fr; gap: 10px; align-items: start; padding: 10px 8px; border-radius: 13px; background: #f8fafc; color: var(--text); font-size: .8rem; line-height: 1.45; }
-.reference-popup .welcome-rule b { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; color: #b27600; background: #fff3d2; }
-.reference-popup .welcome-rule strong { color: #b27600; }
+.reference-popup .welcome-rule b { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; color: #9b7117; background: #f7edcf; }
+.reference-popup .welcome-rule strong { color: #9b7117; }
 .reference-popup .welcome-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.reference-popup .welcome-links .welcome-action { padding: 12px 8px !important; border-radius: 14px !important; background: linear-gradient(135deg, #e5a817, #f4b524) !important; color: #fff !important; text-align: center; font-size: .77rem !important; }
+.reference-popup .welcome-links .welcome-action { padding: 12px 8px !important; border-radius: 14px !important; background: linear-gradient(135deg, #c99a2e, #d6aa3e) !important; color: #fff !important; text-align: center; font-size: .77rem !important; }
 @media (max-width: 520px) {
   .dashboard-image-card { margin-inline: 14px; }
   .dashboard-image-card img, .dashboard-brand-image, .dashboard-image-fallback { min-height: 155px; height: 155px; }
@@ -131,27 +131,27 @@ body {
 }
 
 
-/* Reference-inspired Greenew premium shell: deep forest surfaces, emerald actions, gold accents. */
+/* Reference-inspired Serlzo Investments premium shell: deep forest surfaces, emerald actions, gold accents. */
 :root {
-  --greenew-night: #061512;
-  --greenew-deep: #08231e;
-  --greenew-surface: #0d2923;
-  --greenew-surface-2: #12352d;
-  --greenew-line: rgba(183, 214, 159, .16);
-  --greenew-text: #f2f8ef;
-  --greenew-muted: #9ab5a9;
-  --greenew-accent: #00bd8b;
-  --greenew-accent-2: #65d273;
-  --greenew-gold: #d9ae36;
+  --serlzo-night: #09090a;
+  --serlzo-deep: #101012;
+  --serlzo-surface: #171719;
+  --serlzo-surface-2: #202024;
+  --serlzo-line: rgba(183, 214, 159, .16);
+  --serlzo-text: #f7f5ef;
+  --serlzo-muted: #b7b3a8;
+  --serlzo-accent: #c99a2e;
+  --serlzo-accent-2: #f0c85a;
+  --serlzo-gold: #c99a2e;
 }
 
-html { background: var(--greenew-night) !important; }
+html { background: var(--serlzo-night) !important; }
 body {
   background:
     radial-gradient(circle at 92% -8%, rgba(0, 189, 139, .20), transparent 24rem),
     radial-gradient(circle at -8% 12%, rgba(101, 210, 115, .13), transparent 22rem),
-    var(--greenew-night) !important;
-  color: var(--greenew-text) !important;
+    var(--serlzo-night) !important;
+  color: var(--serlzo-text) !important;
 }
 .page-wrap, .wrap, .auth-wrap {
   width: min(100%, 760px) !important;
@@ -162,21 +162,21 @@ body {
 
 .topbar, .page-topbar {
   min-height: 68px !important;
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   background: linear-gradient(180deg, rgba(8, 43, 36, .98), rgba(6, 21, 18, .96)) !important;
-  border-bottom: 1px solid var(--greenew-line) !important;
+  border-bottom: 1px solid var(--serlzo-line) !important;
   box-shadow: 0 12px 32px rgba(0, 0, 0, .16) !important;
   backdrop-filter: blur(18px) !important;
 }
-.topbar-title { color: var(--greenew-text) !important; letter-spacing: -.01em; }
+.topbar-title { color: var(--serlzo-text) !important; letter-spacing: -.01em; }
 .back-btn, .icon-btn {
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   background: rgba(255, 255, 255, .06) !important;
-  border: 1px solid var(--greenew-line) !important;
+  border: 1px solid var(--serlzo-line) !important;
 }
 
 .wallet-card, .profile-hero, .ref-hero, .collect-hero, .salary-hero {
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   background:
     linear-gradient(135deg, rgba(0, 189, 139, .94), rgba(4, 82, 59, .98) 54%, rgba(8, 35, 30, 1)) !important;
   border: 1px solid rgba(101, 210, 115, .32) !important;
@@ -184,7 +184,7 @@ body {
 }
 .wallet-card { border-radius: 0 0 28px 28px !important; }
 .wallet-btn.payment, .wallet-btn.refund {
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   background: rgba(255, 255, 255, .11) !important;
   border: 1px solid rgba(255, 255, 255, .24) !important;
 }
@@ -192,113 +192,113 @@ body {
 
 .card, .form-card, .menu-group, .product-card, .payments-card, .contact-card, .hours-card, .checkin-card, .gift-hero, .method-card, .bal-card, .saved-card, .strip-card {
   background: linear-gradient(145deg, rgba(18, 53, 45, .98), rgba(10, 34, 29, .98)) !important;
-  color: var(--greenew-text) !important;
-  border: 1px solid var(--greenew-line) !important;
+  color: var(--serlzo-text) !important;
+  border: 1px solid var(--serlzo-line) !important;
   border-radius: 24px !important;
   box-shadow: 0 18px 40px rgba(0, 0, 0, .20) !important;
 }
-.product-header { color: var(--greenew-text) !important; background: linear-gradient(135deg, #00a97d, #07553d) !important; }
-.product-price, .strip-val { color: #f0ca56 !important; }
+.product-header { color: var(--serlzo-text) !important; background: linear-gradient(135deg, #b8891f, #1c1c20) !important; }
+.product-price, .strip-val { color: #f0c85a !important; }
 
 .auth-body {
-  color: var(--greenew-text) !important;
-  background: linear-gradient(145deg, #071a16, #0c2a23) !important;
+  color: var(--serlzo-text) !important;
+  background: linear-gradient(145deg, #0d0d0f, #1a1a1e) !important;
   border-top: 1px solid rgba(101, 210, 115, .18);
 }
 .auth-hero, .hero {
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   text-align: left !important;
   background:
     radial-gradient(circle at 84% 12%, rgba(101, 210, 115, .18), transparent 12rem),
-    linear-gradient(140deg, #00a97d, #07583f 56%, #08231e) !important;
+    linear-gradient(140deg, #b8891f, #171719 56%, #101012) !important;
   border-radius: 0 0 28px 28px !important;
 }
 .auth-body > .auth-wrap, .auth-wrap { background: transparent !important; }
 .auth-body .form-card, .auth-body .auth-card { background: rgba(8, 29, 24, .78) !important; }
-.auth-title, .title { color: var(--greenew-text) !important; }
-.auth-sub, .sub, .auth-switch, .switch { color: var(--greenew-muted) !important; }
-.auth-hero .logo, .auth-hero .logo-sub, .hero .logo, .hero .logo-sub { color: var(--greenew-text) !important; }
-.auth-switch a, .switch a, .forgot { color: var(--greenew-accent-2) !important; }
-.field-label, .auth-body label { color: #c7ddd1 !important; }
+.auth-title, .title { color: var(--serlzo-text) !important; }
+.auth-sub, .sub, .auth-switch, .switch { color: var(--serlzo-muted) !important; }
+.auth-hero .logo, .auth-hero .logo-sub, .hero .logo, .hero .logo-sub { color: var(--serlzo-text) !important; }
+.auth-switch a, .switch a, .forgot { color: var(--serlzo-accent-2) !important; }
+.field-label, .auth-body label { color: #d3cec3 !important; }
 .field input, .field-input, input, select, textarea {
-  color: var(--greenew-text) !important;
-  caret-color: var(--greenew-accent-2) !important;
+  color: var(--serlzo-text) !important;
+  caret-color: var(--serlzo-accent-2) !important;
   background: rgba(4, 20, 17, .76) !important;
-  border-color: var(--greenew-line) !important;
+  border-color: var(--serlzo-line) !important;
   border-radius: 14px !important;
 }
-.field input::placeholder, .field-input::placeholder, input::placeholder, textarea::placeholder { color: #729087 !important; }
+.field input::placeholder, .field-input::placeholder, input::placeholder, textarea::placeholder { color: #949087 !important; }
 .field input:focus, .field-input:focus, input:focus, select:focus, textarea:focus {
-  border-color: var(--greenew-accent) !important;
+  border-color: var(--serlzo-accent) !important;
   background: rgba(6, 29, 23, .96) !important;
   box-shadow: 0 0 0 3px rgba(0, 189, 139, .16) !important;
 }
 .btn, .body .btn {
   border-radius: 14px !important;
-  background: linear-gradient(135deg, var(--greenew-accent), var(--greenew-accent-2)) !important;
-  color: #05251c !important;
+  background: linear-gradient(135deg, var(--serlzo-accent), var(--serlzo-accent-2)) !important;
+  color: #17120a !important;
   box-shadow: 0 12px 28px rgba(0, 189, 139, .20) !important;
 }
-.btn-outline { color: var(--greenew-accent-2) !important; background: transparent !important; border-color: var(--greenew-line) !important; box-shadow: none !important; }
+.btn-outline { color: var(--serlzo-accent-2) !important; background: transparent !important; border-color: var(--serlzo-line) !important; box-shadow: none !important; }
 
 .quick-item, .stat-box, .mini-product, .list-item, .menu-item, .member-item, .notif-item, .msg-item, .bc-item, .contact-item, .info-row, .dc-item, .ti-row {
-  border-color: var(--greenew-line) !important;
+  border-color: var(--serlzo-line) !important;
   background: rgba(13, 41, 35, .78) !important;
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
 }
 .quick-item:hover, .menu-item:hover { background: rgba(0, 189, 139, .12) !important; }
-.menu-label, .li-title, .menu-item strong, .list-item strong { color: var(--greenew-text) !important; }
-.menu-sub, .li-sub, .section-title, .strip-lbl, .muted, .text-muted { color: var(--greenew-muted) !important; }
-.menu-arrow { color: var(--greenew-accent-2) !important; }
+.menu-label, .li-title, .menu-item strong, .list-item strong { color: var(--serlzo-text) !important; }
+.menu-sub, .li-sub, .section-title, .strip-lbl, .muted, .text-muted { color: var(--serlzo-muted) !important; }
+.menu-arrow { color: var(--serlzo-accent-2) !important; }
 .menu-icon, .quick-item-icon, .empty-icon, .hero-icon, .gift-icon, .checkin-icon, .info-icon, .saved-card-icon, .lock-icon, .ci-icon, .notif-icon, .vt-icon {
-  color: var(--greenew-accent-2) !important;
+  color: var(--serlzo-accent-2) !important;
   background: rgba(0, 189, 139, .14) !important;
 }
 
-.tabs, .level-tabs, .hist-tabs { background: rgba(13, 41, 35, .78) !important; border-color: var(--greenew-line) !important; }
-.tab, .ltab, .htab { color: var(--greenew-muted) !important; background: transparent !important; }
+.tabs, .level-tabs, .hist-tabs { background: rgba(13, 41, 35, .78) !important; border-color: var(--serlzo-line) !important; }
+.tab, .ltab, .htab { color: var(--serlzo-muted) !important; background: transparent !important; }
 .tab.on, .ltab.on, .htab.on, .tab.active, .ltab.active, .htab.active {
-  color: var(--greenew-text) !important;
+  color: var(--serlzo-text) !important;
   background: rgba(0, 189, 139, .20) !important;
-  box-shadow: inset 0 -2px 0 var(--greenew-accent-2) !important;
+  box-shadow: inset 0 -2px 0 var(--serlzo-accent-2) !important;
 }
 
 .bottom-nav {
   background: rgba(5, 22, 18, .96) !important;
-  border-color: var(--greenew-line) !important;
+  border-color: var(--serlzo-line) !important;
   box-shadow: 0 -12px 30px rgba(0, 0, 0, .20) !important;
 }
-.nav-item { color: var(--greenew-muted) !important; }
-.nav-item.active { color: var(--greenew-accent-2) !important; }
+.nav-item { color: var(--serlzo-muted) !important; }
+.nav-item.active { color: var(--serlzo-accent-2) !important; }
 .nav-icon { color: currentColor !important; background: transparent !important; }
 
 .profile-hero { padding-top: 34px !important; }
 .cards-strip { margin-top: -22px !important; }
-.section-title { color: #a9c7b8 !important; }
-.logout-btn { color: #ef9c9c !important; border-color: rgba(239, 156, 156, .55) !important; background: rgba(120, 25, 34, .16) !important; }
+.section-title { color: #b8b2a5 !important; }
+.logout-btn { color: #e6a2a2 !important; border-color: rgba(239, 156, 156, .55) !important; background: rgba(120, 25, 34, .16) !important; }
 
-.gift-hero, .checkin-card, .method-card { color: var(--greenew-text) !important; }
-.gift-hero { background: linear-gradient(145deg, #00a97d, #07583f 58%, #08231e) !important; }
-.checkin-card { background: linear-gradient(145deg, #00a97d, #07583f 58%, #08231e) !important; }
-.checkin-btn { color: #05251c !important; background: linear-gradient(135deg, #f5d36b, #d9ae36) !important; }
-.amt-chip { background: rgba(13, 41, 35, .94) !important; border-color: var(--greenew-line) !important; color: var(--greenew-text) !important; }
-.amt-chip.on { background: var(--greenew-accent) !important; border-color: var(--greenew-accent-2) !important; color: #042218 !important; }
-.transfer-info, .ti-row, .method-card .ti-label { color: var(--greenew-text) !important; }
-.ti-label { color: var(--greenew-muted) !important; }
-.ti-val { color: var(--greenew-text) !important; }
-.copy-btn { background: rgba(0, 189, 139, .17) !important; color: var(--greenew-accent-2) !important; }
+.gift-hero, .checkin-card, .method-card { color: var(--serlzo-text) !important; }
+.gift-hero { background: linear-gradient(145deg, #b8891f, #171719 58%, #101012) !important; }
+.checkin-card { background: linear-gradient(145deg, #b8891f, #171719 58%, #101012) !important; }
+.checkin-btn { color: #17120a !important; background: linear-gradient(135deg, #f7db85, #c99a2e) !important; }
+.amt-chip { background: rgba(13, 41, 35, .94) !important; border-color: var(--serlzo-line) !important; color: var(--serlzo-text) !important; }
+.amt-chip.on { background: var(--serlzo-accent) !important; border-color: var(--serlzo-accent-2) !important; color: #17120a !important; }
+.transfer-info, .ti-row, .method-card .ti-label { color: var(--serlzo-text) !important; }
+.ti-label { color: var(--serlzo-muted) !important; }
+.ti-val { color: var(--serlzo-text) !important; }
+.copy-btn { background: rgba(0, 189, 139, .17) !important; color: var(--serlzo-accent-2) !important; }
 
-.dashboard-image-card { background: #f8fbf5 !important; border-color: rgba(217, 174, 54, .35) !important; }
-.dashboard-section-title h2 { color: var(--greenew-text) !important; }
-.dashboard-section-title a { color: #f0ca56 !important; }
+.dashboard-image-card { background: #fbfaf7 !important; border-color: rgba(217, 174, 54, .35) !important; }
+.dashboard-section-title h2 { color: var(--serlzo-text) !important; }
+.dashboard-section-title a { color: #f0c85a !important; }
 
-.reference-popup .welcome-hero { background: linear-gradient(145deg, #d5a72c, #efd06b) !important; }
+.reference-popup .welcome-hero { background: linear-gradient(145deg, #b8891f, #f3d47a) !important; }
 .reference-popup .welcome-dialog { border: 1px solid rgba(217, 174, 54, .48) !important; box-shadow: 0 26px 70px rgba(0, 0, 0, .42) !important; }
-.reference-popup .welcome-body { background: #f8faf6 !important; }
+.reference-popup .welcome-body { background: #fbfaf7 !important; }
 
 @media (min-width: 780px) {
   body { padding: 0 18px; }
-  .page-wrap, .auth-wrap { margin: 18px auto; border: 1px solid var(--greenew-line); border-radius: 28px; overflow: hidden; box-shadow: 0 28px 80px rgba(0, 0, 0, .22); }
+  .page-wrap, .auth-wrap { margin: 18px auto; border: 1px solid var(--serlzo-line); border-radius: 28px; overflow: hidden; box-shadow: 0 28px 80px rgba(0, 0, 0, .22); }
 }
 
 @media (max-width: 520px) {
@@ -313,15 +313,74 @@ body .auth-body .auth-title,
 body .auth-body .title,
 body .auth-body h1,
 body .auth-body h2,
-body .auth-body h3 { color: #f2f8ef !important; }
+body .auth-body h3 { color: #f7f5ef !important; }
 body .auth-body .auth-sub,
 body .auth-body .sub,
 body .auth-body .auth-switch,
 body .auth-body .switch,
-body .auth-body .divider-row span { color: #aac4b7 !important; }
+body .auth-body .divider-row span { color: #b9b5ab !important; }
 body .auth-body .field-label,
-body .auth-body label { color: #d2e4d9 !important; }
+body .auth-body label { color: #d9d4c9 !important; }
 body .auth-body .auth-switch a,
 body .auth-body .switch a,
-body .auth-body .forgot { color: #65d273 !important; }
-body .auth-body .alert { color: #f2f8ef !important; }
+body .auth-body .forgot { color: #f0c85a !important; }
+body .auth-body .alert { color: #f7f5ef !important; }
+
+
+/* Final Serlzo Investments palette lock. This comes last so legacy page-local rules cannot reintroduce green accents. */
+:root {
+  --serlzo-night: #080809;
+  --serlzo-black: #0b0b0c;
+  --serlzo-surface: #171719;
+  --serlzo-surface-2: #222226;
+  --serlzo-line: rgba(240, 200, 90, .22);
+  --serlzo-text: #f7f5ef;
+  --serlzo-muted: #b9b5ab;
+  --serlzo-accent: #c99a2e;
+  --serlzo-accent-2: #f0c85a;
+}
+html { background: var(--serlzo-night) !important; }
+body {
+  color: var(--serlzo-text) !important;
+  background:
+    radial-gradient(circle at 92% -8%, rgba(240, 200, 90, .14), transparent 24rem),
+    radial-gradient(circle at -8% 12%, rgba(201, 154, 46, .10), transparent 22rem),
+    var(--serlzo-night) !important;
+}
+.topbar, .page-topbar { color: var(--serlzo-text) !important; background: rgba(11, 11, 12, .96) !important; border-color: var(--serlzo-line) !important; }
+.topbar-title, .back-btn, .icon-btn { color: var(--serlzo-text) !important; }
+.back-btn, .icon-btn { background: rgba(255, 255, 255, .06) !important; border-color: var(--serlzo-line) !important; }
+.wallet-card, .profile-hero, .ref-hero, .collect-hero, .salary-hero, .gift-hero, .checkin-card, .auth-hero, .hero, .product-header {
+  color: var(--serlzo-text) !important;
+  background: linear-gradient(135deg, var(--serlzo-black), var(--serlzo-surface) 58%, var(--serlzo-accent)) !important;
+  border-color: var(--serlzo-line) !important;
+}
+.card, .form-card, .menu-group, .product-card, .payments-card, .contact-card, .hours-card, .method-card, .bal-card, .saved-card, .strip-card, .auth-card, .body {
+  color: var(--serlzo-text) !important;
+  background: linear-gradient(145deg, rgba(34, 34, 38, .98), rgba(15, 15, 17, .98)) !important;
+  border-color: var(--serlzo-line) !important;
+}
+.quick-item, .stat-box, .mini-product, .list-item, .menu-item, .member-item, .notif-item, .msg-item, .bc-item, .contact-item, .info-row, .dc-item, .ti-row {
+  color: var(--serlzo-text) !important;
+  background: rgba(23, 23, 25, .92) !important;
+  border-color: var(--serlzo-line) !important;
+}
+.menu-label, .li-title, .menu-item strong, .list-item strong, .dashboard-section-title h2, .auth-title, .title, .field-input, input, select, textarea { color: var(--serlzo-text) !important; }
+.menu-sub, .li-sub, .section-title, .strip-lbl, .muted, .text-muted, .auth-sub, .sub, .auth-switch, .switch { color: var(--serlzo-muted) !important; }
+.menu-icon, .quick-item-icon, .empty-icon, .hero-icon, .gift-icon, .checkin-icon, .info-icon, .saved-card-icon, .lock-icon, .ci-icon, .notif-icon, .vt-icon { color: var(--serlzo-accent-2) !important; background: rgba(201, 154, 46, .16) !important; }
+.tabs, .level-tabs, .hist-tabs { background: rgba(23, 23, 25, .92) !important; border-color: var(--serlzo-line) !important; }
+.tab.on, .ltab.on, .htab.on, .tab.active, .ltab.active, .htab.active { color: var(--serlzo-text) !important; background: rgba(201, 154, 46, .20) !important; box-shadow: inset 0 -2px 0 var(--serlzo-accent-2) !important; }
+.field input, .field-input, input, select, textarea { background: rgba(8, 8, 9, .86) !important; border-color: var(--serlzo-line) !important; caret-color: var(--serlzo-accent-2) !important; }
+.field input:focus, .field-input:focus, input:focus, select:focus, textarea:focus { border-color: var(--serlzo-accent) !important; box-shadow: 0 0 0 3px rgba(201, 154, 46, .18) !important; }
+.btn, .body .btn, .btn-primary, .btn-purple, .btn-sky { color: #17120a !important; background: linear-gradient(135deg, var(--serlzo-accent), var(--serlzo-accent-2)) !important; }
+.btn-outline { color: var(--serlzo-accent-2) !important; background: transparent !important; border-color: var(--serlzo-line) !important; }
+.auth-body { color: var(--serlzo-text) !important; background: linear-gradient(145deg, #0b0b0c, #171719) !important; }
+.auth-hero .logo, .auth-hero .logo-sub, .hero .logo, .hero .logo-sub, .auth-body .auth-title, .auth-body .title, .auth-body h1, .auth-body h2, .auth-body h3 { color: var(--serlzo-text) !important; }
+.auth-body .field-label, .auth-body label { color: #d9d4c9 !important; }
+.auth-switch a, .switch a, .forgot, .nav-item.active, .nav-icon, .dashboard-section-title a, .product-price, .strip-val { color: var(--serlzo-accent-2) !important; }
+.bottom-nav { background: rgba(8, 8, 9, .97) !important; border-color: var(--serlzo-line) !important; }
+.nav-item { color: var(--serlzo-muted) !important; }
+#welcomeOverlay { background: rgba(0, 0, 0, .72) !important; }
+#welcomeOverlay .welcome-hero, .reference-popup .welcome-hero { background: linear-gradient(135deg, var(--serlzo-black), var(--serlzo-accent)) !important; }
+#welcomeOverlay .welcome-dialog, .reference-popup .welcome-dialog { border-color: var(--serlzo-line) !important; }
+#welcomeOverlay .welcome-action, .reference-popup .welcome-links .welcome-action { color: #17120a !important; background: linear-gradient(135deg, var(--serlzo-accent), var(--serlzo-accent-2)) !important; }
