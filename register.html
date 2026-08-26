@@ -60,7 +60,7 @@
   </style>
   <link rel="stylesheet" href="assets/css/premium-pages.css"/>
 </head>
-<body>
+<body class="register-page">
 
 <div class="wrap">
   <div class="hero">
@@ -173,7 +173,7 @@
     /* wait for page config or /api/config before using Supabase */
     if(window.SerlzoReady) await window.SerlzoReady;
     if(!window.sb){
-      showAlert(window.SerlzoConfig?.error || "Serlzo Investments access is not configured yet. Ask the site administrator to set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.", "error"); return;
+      showAlert(window.SerlzoConfig?.error || "Serlzo Investments account service is unavailable. Check the deployment configuration and try again.", "error"); return;
     }
 
     btn.disabled = true; btn.textContent = "Creating account…";
@@ -186,12 +186,17 @@
          RLS blocks a client-side write here whenever email
          confirmation is required and no session exists yet. */
       if(ref){
-        var {data:refProfile} = await window.sb
-          .from("profiles").select("id,full_name")
-          .eq("referral_code", ref).single();
-        if(refProfile){
-          document.getElementById("refName").textContent = refProfile.full_name || "a friend";
-          document.getElementById("refBox").style.display = "block";
+        try {
+          var {data:refProfile} = await window.sb
+            .from("profiles").select("id,full_name")
+            .eq("referral_code", ref).single();
+          if(refProfile){
+            document.getElementById("refName").textContent = refProfile.full_name || "a friend";
+            document.getElementById("refBox").style.display = "block";
+          }
+        } catch(refLookupError) {
+          // Referral display is optional; never block account creation if lookup is unavailable.
+          console.warn("Referral lookup skipped:", refLookupError);
         }
       }
 
@@ -240,7 +245,11 @@
 
     } catch(e) {
       console.error("Registration error:", e);
-      var errMsg = cleanMsg(e?.message);
+      var rawMessage = cleanMsg(e?.message);
+      var isFetchFailure = /failed to fetch|networkerror|load failed|name_not_resolved|network request failed/i.test(String(rawMessage || e || ""));
+      var errMsg = isFetchFailure
+        ? "Unable to reach the account service. Confirm that SUPABASE_URL points to an active Supabase project, then redeploy and try again."
+        : rawMessage;
       showAlert(errMsg || "Registration failed. Please check your Supabase setup and try again.", "error");
       btn.disabled = false; btn.textContent = "Create Account";
     }
