@@ -2,23 +2,28 @@
 (function () {
   "use strict";
 
-  function firstValue() {
-    for (var i = 0; i < arguments.length; i += 1) {
-      if (arguments[i] && String(arguments[i]).trim()) return String(arguments[i]).trim();
+  function normaliseUrl(value) {
+    var raw = String(value || "").trim().replace(/\/+$/, "");
+    if (!raw) return "";
+    try {
+      var parsed = new URL(raw);
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return "";
+      return parsed.toString().replace(/\/+$/, "");
+    } catch (error) {
+      return "";
     }
-    return "";
   }
 
   function inlineConfig() {
     var body = document.body;
-    var url = body?.dataset?.supabaseUrl || "";
-    var anon = body?.dataset?.supabaseAnon || "";
-    if (!url || url === "YOUR_SUPABASE_URL" || !anon || anon === "YOUR_SUPABASE_ANON_KEY") return null;
+    var url = normaliseUrl(body?.dataset?.supabaseUrl || "");
+    var anon = String(body?.dataset?.supabaseAnon || "").trim();
+    if (!url || url === "https://YOUR_SUPABASE_URL" || !anon || anon === "YOUR_SUPABASE_ANON_KEY") return null;
     return { supabaseUrl: url, supabaseAnon: anon };
   }
 
-  function setConfigError(message) {
-    window.SerlzoConfig = { ok: false, error: message };
+  function setConfigError(message, code) {
+    window.SerlzoConfig = { ok: false, code: code || "CONFIG_ERROR", error: message };
     window.SerlzoUI?.hideLoader();
   }
 
@@ -27,22 +32,33 @@
 
     if (!config) {
       try {
-        var response = await fetch("/api/config", { headers: { Accept: "application/json" } });
+        var response = await fetch("/api/config", {
+          headers: { Accept: "application/json" },
+          cache: "no-store"
+        });
         var payload = await response.json().catch(function () { return null; });
-        if (response.ok && payload?.supabaseUrl && payload?.supabaseAnon) {
-          config = { supabaseUrl: payload.supabaseUrl, supabaseAnon: payload.supabaseAnon };
+        var configuredUrl = normaliseUrl(payload?.supabaseUrl);
+        var configuredAnon = String(payload?.supabaseAnon || "").trim();
+        if (response.ok && configuredUrl && configuredAnon) {
+          config = { supabaseUrl: configuredUrl, supabaseAnon: configuredAnon };
         } else {
-          setConfigError(payload?.error || "Serlzo Investments public Supabase configuration is missing.");
+          setConfigError(
+            payload?.error || "Serlzo Investments public Supabase configuration is missing. Set SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.",
+            response.status === 503 ? "CONFIG_MISSING" : "CONFIG_INVALID"
+          );
           return null;
         }
       } catch (error) {
-        setConfigError("Serlzo Investments could not reach its public configuration endpoint. Check the deployment and try again.");
+        setConfigError(
+          "Serlzo Investments could not reach /api/config. Confirm that the deployment includes the API functions and redeploy.",
+          "CONFIG_ENDPOINT_UNREACHABLE"
+        );
         return null;
       }
     }
 
     if (typeof window.supabase === "undefined") {
-      setConfigError("The Serlzo Investments Supabase client library did not load. Check the CDN policy or network connection.");
+      setConfigError("The Serlzo Investments Supabase client library did not load. Check the CDN policy or network connection.", "CLIENT_LIBRARY_MISSING");
       return null;
     }
 
@@ -50,11 +66,17 @@
       window.sb = window.supabase.createClient(config.supabaseUrl, config.supabaseAnon, {
         auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
       });
-      window.SerlzoConfig = { ok: true, supabaseUrl: config.supabaseUrl };
+      // The anon key is public by design and is needed by the registration preflight.
+      window.SerlzoConfig = {
+        ok: true,
+        code: "READY",
+        supabaseUrl: config.supabaseUrl,
+        supabaseAnon: config.supabaseAnon
+      };
       window.SerlzoUI?.hideLoader();
       return window.sb;
     } catch (error) {
-      setConfigError("Serlzo Investments received an invalid Supabase public configuration.");
+      setConfigError("Serlzo Investments received an invalid Supabase public configuration. Check SUPABASE_URL and SUPABASE_ANON_KEY in Vercel.", "CONFIG_INVALID");
       return null;
     }
   })();
