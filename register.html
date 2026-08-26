@@ -217,7 +217,14 @@
       });
 
       if(error){
-        showAlert(error.message || "Registration failed. Try again.", "error");
+        var signupMessage = cleanMsg(error.message || error);
+        var signupNetworkFailure = /failed to fetch|networkerror|load failed|name_not_resolved|network request failed/i.test(String(signupMessage || ""));
+        showAlert(
+          signupNetworkFailure
+            ? "Unable to reach the account service. The deployed SUPABASE_URL points to an unavailable project. Update the Vercel Supabase URL and redeploy."
+            : signupMessage || "Registration failed. Try again.",
+          "error"
+        );
         btn.disabled = false; btn.textContent = "Create Account"; return;
       }
 
