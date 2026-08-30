@@ -59,6 +59,7 @@ async function notifyDeposit(deposit) {
     `👤 User: ${deposit.user_name || "Unknown"}\n` +
     `📧 Email: ${deposit.user_email || "—"}\n` +
     `💰 Amount: <b>₦${Number(deposit.amount).toLocaleString()}</b>\n` +
+    `🏦 Bank username: ${deposit.bank_username || "—"}\n` +
     `🏷 Narration: <code>${deposit.narration}</code>\n` +
     `🆔 Deposit ID: <code>${deposit.id}</code>\n` +
     `⏰ Time: ${new Date().toLocaleString("en-NG")}`;

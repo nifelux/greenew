@@ -52,13 +52,17 @@ module.exports = async function(req, res) {
 
   if(req.method!=="POST") return res.status(405).json({ error:"Method not allowed" });
 
-  const { user_id, amount, email } = req.body;
+  const { user_id, amount, email, bank_username } = req.body || {};
   if(!user_id || !amount) return res.status(400).json({ error:"user_id and amount required" });
   const num = Number(amount);
-  if(num < 500) return res.status(400).json({ error:"Minimum deposit is ₦500" });
+  if(!Number.isFinite(num) || num < 500) return res.status(400).json({ error:"Minimum deposit is ₦500" });
 
   // POST: initiate-manual
   if(action==="initiate-manual") {
+    const senderBankUsername = String(bank_username || "").trim();
+    if(!senderBankUsername) return res.status(400).json({ error:"bank_username is required for manual deposits" });
+    if(senderBankUsername.length > 100) return res.status(400).json({ error:"bank_username must be 100 characters or fewer" });
+
     const reference = genRef("MAN", user_id);
     const narration = genNarration(user_id);
 
@@ -66,7 +70,7 @@ module.exports = async function(req, res) {
       .from("profiles").select("full_name,email").eq("id",user_id).single();
 
     const { data:dep, error } = await supabase.from("deposits").insert({
-      user_id, amount:num, reference, narration,
+      user_id, amount:num, reference, narration, bank_username: senderBankUsername,
       status:"pending", method:"manual", provider:"manual",
       created_at: new Date().toISOString(),
     }).select().single();
@@ -77,7 +81,7 @@ module.exports = async function(req, res) {
     try {
       const { notifyDeposit } = require("./telegram");
       await notifyDeposit({
-        id: dep.id, amount: num, narration,
+        id: dep.id, amount: num, narration, bank_username: senderBankUsername,
         user_name:  profile?.full_name || "Unknown",
         user_email: profile?.email || "",
       });
