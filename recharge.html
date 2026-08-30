@@ -98,6 +98,12 @@
     </div>
   </div>
 
+  <div id="senderUsernameWrap" style="margin:16px 16px 0">
+    <label for="senderBankUsername" style="display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px">Bank username used for transfer</label>
+    <input class="field-input" type="text" id="senderBankUsername" maxlength="100" autocomplete="off" placeholder="Enter the bank username or sender name" />
+    <div style="font-size:11px;color:var(--muted);margin-top:5px">Enter the name or username shown on the bank account used to send this deposit.</div>
+  </div>
+
   <!-- Shown only for Paystack — no static account number needed -->
   <div id="paystackNote" style="display:none;margin:16px;background:var(--sky-light);border-radius:var(--radius-sm);padding:16px;text-align:center">
     <div style="font-size:28px;margin-bottom:8px"></div>
@@ -186,16 +192,20 @@
     var card = document.getElementById("methodCard");
     var pNote = document.getElementById("paystackNote");
     var iNote = document.getElementById("ipayngNote");
+    var usernameWrap = document.getElementById("senderUsernameWrap");
 
     if(m==="paystack"){
       badge.className="method-badge mb-paystack"; badge.textContent="Paystack — Card & Bank";
       card.style.display="none"; pNote.style.display="block"; iNote.style.display="none";
+      if(usernameWrap) usernameWrap.style.display="none";
     } else if(m==="ipayng"){
       badge.className="method-badge mb-ipayng"; badge.textContent="iPayNG Transfer";
       card.style.display="none"; pNote.style.display="none"; iNote.style.display="block";
+      if(usernameWrap) usernameWrap.style.display="none";
     } else {
       badge.className="method-badge mb-manual"; badge.textContent="Manual Bank Transfer";
       card.style.display="block"; pNote.style.display="none"; iNote.style.display="none";
+      if(usernameWrap) usernameWrap.style.display="block";
     }
   }
 
@@ -223,6 +233,14 @@
 
   async function handleMakePayment(){
     if(!selAmt||selAmt<3000){ window.SerlzoAuth.toast("Minimum payment is ₦3,000"); return; }
+    if(activeMethod==="manual"){
+      var senderUsername=document.getElementById("senderBankUsername").value.trim();
+      if(!senderUsername){
+        window.SerlzoAuth.toast("Enter the bank username or sender name used for this transfer");
+        document.getElementById("senderBankUsername").focus();
+        return;
+      }
+    }
     var btn=document.getElementById("rechBtn");
     btn.disabled=true; btn.textContent="Processing…";
 
@@ -233,7 +251,7 @@
   async function doManual(){
     var btn=document.getElementById("rechBtn");
     try{
-      var r=await fetch("/api/deposit?action=initiate-manual",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,amount:selAmt})});
+      var r=await fetch("/api/deposit?action=initiate-manual",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,amount:selAmt,bank_username:document.getElementById("senderBankUsername").value.trim()})});
       var d=await r.json();
       if(!d.ok){ window.SerlzoAuth.toast(d.error||"Error"); btn.disabled=false; btn.textContent="Continue"; return; }
       applyBankDetails(d);
