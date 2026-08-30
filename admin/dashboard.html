@@ -458,6 +458,12 @@
 (function(){
   var adminId="", allUsers=[], depFilter="pending", wFilter="pending";
 
+  function escHtml(value){
+    return String(value == null ? "" : value).replace(/[&<>"']/g,function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+    });
+  }
+
   function waitSb(cb){if(window.sb&&window.SerlzoAuth){cb();return;}var t=setInterval(function(){if(window.sb&&window.SerlzoAuth){clearInterval(t);cb();}},50);}
 
   waitSb(async function(){
@@ -512,6 +518,7 @@
     if(!deps.length){ el.innerHTML='<div style="text-align:center;color:#6E8178;padding:32px;font-size:14px">No payments found.</div>'; return; }
     el.innerHTML=deps.map(function(dep){
       var name=dep.profiles?.full_name||dep.profiles?.email||"User";
+      var bankUsername=dep.bank_username ? escHtml(dep.bank_username) : "Not provided";
       var sColor={pending:"#FCD34D",completed:"#d6aa3e",rejected:"#f87171"}[dep.status]||"#8BA296";
       var canAct=dep.status==="pending";
       return '<div class="dep-row">'+
@@ -519,6 +526,7 @@
           '<div><div class="dep-name">'+name+'</div><div class="dep-meta">'+dep.profiles?.email+' · '+new Date(dep.created_at).toLocaleString()+'</div></div>'+
           '<div style="text-align:right"><div class="dep-amt">₦'+Number(dep.amount).toLocaleString()+'</div><div style="font-size:11px;font-weight:700;color:'+sColor+'">'+dep.status.toUpperCase()+'</div></div>'+
         '</div>'+
+        '<div style="margin-top:10px;padding:9px 10px;border:1px solid rgba(240,200,90,.22);border-radius:8px;background:rgba(240,200,90,.08);font-size:12px"><span style="color:#b9b5ab">Bank username:</span> <strong style="color:#f7f5ef">'+bankUsername+'</strong></div>'+
         (dep.narration?'<div class="dep-nar"><span class="dep-nar-code">'+dep.narration+'</span><button onclick="copyTxt(\''+dep.narration+'\')" style="background:none;border:none;color:#FCD34D;font-size:11px;cursor:pointer;font-weight:700">COPY</button></div>':'')+
         (canAct?'<div class="dep-actions"><button class="btn-approve" onclick="actDep(\''+dep.id+'\',\'approve\',this)">✅ Approve</button><button class="btn-reject" onclick="actDep(\''+dep.id+'\',\'reject\',this)">❌ Reject</button></div>':'')+
       '</div>';
