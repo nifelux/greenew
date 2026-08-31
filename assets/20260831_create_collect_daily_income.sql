@@ -34,8 +34,8 @@ BEGIN
     FROM public.user_products
     WHERE user_id = p_user_id
       AND status = 'active'
-      -- Match the frontend rule: a plan becomes collectible the day after purchase.
-      AND COALESCE(purchased_on::date, created_at::date, DATE '1900-01-01') < today_date
+      -- Match the deployed schema: a plan becomes collectible the day after creation.
+      AND created_at::date < today_date
       AND COALESCE(last_collected_at::date, last_claim_date, DATE '1900-01-01') < today_date
       AND (duration_days IS NULL OR COALESCE(days_collected, 0) < duration_days)
     ORDER BY created_at ASC, id ASC
