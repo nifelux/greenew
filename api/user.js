@@ -88,7 +88,15 @@ module.exports = async function(req, res) {
 
   if(action==="collect-income") {
     const { data, error } = await userSupabase.rpc("collect_daily_income", { p_user_id:user_id });
-    if(error) return res.status(500).json({ error:error.message });
+    if(error) {
+      const rawError=String(error.message||"");
+      const missingFunction=error.code==="PGRST202" || /collect_daily_income|schema cache/i.test(rawError);
+      return res.status(500).json({
+        error: missingFunction
+          ? "Daily income collection is not installed yet. Run supabase/migrations/20260831_create_collect_daily_income.sql in the Supabase SQL Editor, then reload this page."
+          : rawError || "Unable to collect daily income"
+      });
+    }
     return res.json(data || { ok:false, error:"Nothing to collect today" });
   }
 
